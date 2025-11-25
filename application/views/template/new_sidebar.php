@@ -133,6 +133,12 @@
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
+							<a href="<?php echo site_url('Data_Perkara_Gugatan') ?>" class="nav-link">
+								<i class="fas fa-file-alt nav-icon"></i>
+								<p>DATA PERKARA GUGATAN</p>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="<?php echo site_url('Lipa1') ?>" class="nav-link">
 								<i class="fas fa-clipboard-list nav-icon"></i>
 								<p>LAPORAN KEADAAN PERKARA</p>
