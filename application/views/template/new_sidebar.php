@@ -89,30 +89,7 @@
 					</ul>
 				</li>	
 
-				<!-- Delegasi Menu -->
-				<li class="nav-item">
-					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-exchange-alt"></i>
-						<p>
-							DELEGASI
-							<i class="fas fa-angle-left right"></i>
-						</p>
-					</a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a href="<?php echo site_url('Delegasi') ?>" class="nav-link">
-								<i class="fas fa-arrow-down nav-icon"></i>
-								<p>Delegasi Masuk</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="<?php echo site_url('Delegasi_k') ?>" class="nav-link">
-								<i class="fas fa-arrow-up nav-icon"></i>
-								<p>Delegasi Keluar</p>
-							</a>
-						</li>
-					</ul>
-				</li>
+				
 
 				<!-- Data Perceraian Menu -->
 				<li class="nav-item">
@@ -165,33 +142,45 @@
 					</ul>
 				</li>
 
-				<!-- Perkara Menu -->
+				<!-- Data Permohonan Menu -->
 				<li class="nav-item">
 					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-gavel"></i>
+						<i class="nav-icon fas fa-map-marked-alt"></i>
 						<p>
-							PERKARA
+							DATA PERMOHONAN
 							<i class="fas fa-angle-left right"></i>
 						</p>
 					</a>
 					<ul class="nav nav-treeview">
-						
 						<li class="nav-item">
-							<a href="<?php echo site_url('Lipa1') ?>" class="nav-link">
-								<i class="fas fa-clipboard-list nav-icon"></i>
-								<p>LAPORAN KEADAAN PERKARA</p>
+							<a href="<?php echo site_url('Data_Permohonan') ?>" class="nav-link">
+								<i class="fas fa-chart-bar nav-icon"></i>
+								<p>LAPORAN PERMOHONAN PER WILAYAH</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<!-- Delegasi Menu -->
+				<li class="nav-item">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-exchange-alt"></i>
+						<p>
+							DELEGASI
+							<i class="fas fa-angle-left right"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo site_url('Delegasi') ?>" class="nav-link">
+								<i class="fas fa-arrow-down nav-icon"></i>
+								<p>Delegasi Masuk</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="<?php echo site_url('Perkara_Banding') ?>" class="nav-link">
-								<i class="fas fa-balance-scale nav-icon"></i>
-								<p>PERKARA BANDING</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="<?php echo site_url('Perkara_Putusan') ?>" class="nav-link">
-								<i class="fas fa-file-signature nav-icon"></i>
-								<p>PERKARA PUTUSAN</p>
+							<a href="<?php echo site_url('Delegasi_k') ?>" class="nav-link">
+								<i class="fas fa-arrow-up nav-icon"></i>
+								<p>Delegasi Keluar</p>
 							</a>
 						</li>
 					</ul>
