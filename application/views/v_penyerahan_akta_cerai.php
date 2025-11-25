@@ -28,35 +28,27 @@
 									<form action="<?php echo base_url() ?>index.php/Penyerahan_akta_cerai" method="POST">
 										Laporan Bulan :
 										<select name="lap_bulan" required="">
-											<option value="01" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '01') ? 'selected' : ''; ?>>Januari</option>
-											<option value="02" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '02') ? 'selected' : ''; ?>>Februari</option>
-											<option value="03" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '03') ? 'selected' : ''; ?>>Maret</option>
-											<option value="04" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '04') ? 'selected' : ''; ?>>April</option>
-											<option value="05" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '05') ? 'selected' : ''; ?>>Mei</option>
-											<option value="06" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '06') ? 'selected' : ''; ?>>Juni</option>
-											<option value="07" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '07') ? 'selected' : ''; ?>>Juli</option>
-											<option value="08" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '08') ? 'selected' : ''; ?>>Agustus</option>
-											<option value="09" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '09') ? 'selected' : ''; ?>>September</option>
-											<option value="10" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '10') ? 'selected' : ''; ?>>Oktober</option>
-											<option value="11" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '11') ? 'selected' : ''; ?>>Nopember</option>
-											<option value="12" <?php echo (isset($_POST['lap_bulan']) && $_POST['lap_bulan'] === '12') ? 'selected' : ''; ?>>Desember</option>
+											<option value="01" <?php echo (isset($selected_bulan) && $selected_bulan === '01') ? 'selected' : ''; ?>>Januari</option>
+											<option value="02" <?php echo (isset($selected_bulan) && $selected_bulan === '02') ? 'selected' : ''; ?>>Februari</option>
+											<option value="03" <?php echo (isset($selected_bulan) && $selected_bulan === '03') ? 'selected' : ''; ?>>Maret</option>
+											<option value="04" <?php echo (isset($selected_bulan) && $selected_bulan === '04') ? 'selected' : ''; ?>>April</option>
+											<option value="05" <?php echo (isset($selected_bulan) && $selected_bulan === '05') ? 'selected' : ''; ?>>Mei</option>
+											<option value="06" <?php echo (isset($selected_bulan) && $selected_bulan === '06') ? 'selected' : ''; ?>>Juni</option>
+											<option value="07" <?php echo (isset($selected_bulan) && $selected_bulan === '07') ? 'selected' : ''; ?>>Juli</option>
+											<option value="08" <?php echo (isset($selected_bulan) && $selected_bulan === '08') ? 'selected' : ''; ?>>Agustus</option>
+											<option value="09" <?php echo (isset($selected_bulan) && $selected_bulan === '09') ? 'selected' : ''; ?>>September</option>
+											<option value="10" <?php echo (isset($selected_bulan) && $selected_bulan === '10') ? 'selected' : ''; ?>>Oktober</option>
+											<option value="11" <?php echo (isset($selected_bulan) && $selected_bulan === '11') ? 'selected' : ''; ?>>Nopember</option>
+											<option value="12" <?php echo (isset($selected_bulan) && $selected_bulan === '12') ? 'selected' : ''; ?>>Desember</option>
 										</select>
 										Tahun :
 										<select name="lap_tahun" required="">
-											<option value="2016" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2016') ? 'selected' : ''; ?>>2016</option>
-											<option value="2017" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2017') ? 'selected' : ''; ?>>2017</option>
-											<option value="2018" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2018') ? 'selected' : ''; ?>>2018</option>
-											<option value="2019" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2019') ? 'selected' : ''; ?>>2019</option>
-											<option value="2020" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2020') ? 'selected' : ''; ?>>2020</option>
-											<option value="2021" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2021') ? 'selected' : ''; ?>>2021</option>
-											<option value="2022" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2022') ? 'selected' : ''; ?>>2022</option>
-											<option value="2023" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2023') ? 'selected' : ''; ?>>2023</option>
-											<option value="2024" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2024') ? 'selected' : ''; ?>>2024</option>
-											<option value="2025" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2025') ? 'selected' : ''; ?>>2025</option>
+											<?php for($i = 2016; $i <= date('Y'); $i++): ?>
+												<option value="<?php echo $i; ?>" <?php echo (isset($selected_tahun) && $selected_tahun == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+											<?php endfor; ?>
 										</select>
 										<input class="btn btn-primary" type="submit" name="btn" value="Tampilkan" />
-
-								</div>
+									</div>
 								<!-- /.card-header -->
 								<div class="card-body">
 									<table class="table table-bordered table-striped" id="example1">
@@ -75,62 +67,70 @@
 											</tr>
 										</thead>
 										<tbody>
-											
-
-											<?php
-											$no = 1;
-											
-												foreach ($datafilter as $row) : ?>
+											<?php if(isset($datafilter) && count($datafilter) > 0): ?>
+												<?php $no = 1; foreach ($datafilter as $row) : ?>
 													<tr>
-														<td><?php echo $no++ ?></td>
-														<td><?php echo $row->nomor_perkara ?></td>
-														<td><?php echo $row->nomor_akta_cerai ?></td>
-														<td><?php echo $row->tanggal_putusan ?></td>
-														<td><?php echo $row->tgl_ikrar_talak ?></td>
-														<td><?php echo $row->tanggal_bht ?></td>
-														<td><?php if ($row->jenis_perkara_nama == 'Cerai Talak') {
-																echo $row->tgl_AC_P;
+														<td><?php echo $no++; ?></td>
+														<td><?php echo $row->nomor_perkara; ?></td>
+														<td><?php echo $row->nomor_akta_cerai ?: '-'; ?></td>
+														<td><?php echo $row->tanggal_putusan ? date('d/m/Y', strtotime($row->tanggal_putusan)) : '-'; ?></td>
+														<td><?php echo $row->tgl_ikrar_talak ? date('d/m/Y', strtotime($row->tgl_ikrar_talak)) : '-'; ?></td>
+														<td><?php echo $row->tanggal_bht ? date('d/m/Y', strtotime($row->tanggal_bht)) : '-'; ?></td>
+														<td>
+															<?php 
+															// Penyerahan Kepada Suami
+															if ($row->jenis_perkara_nama == 'Cerai Talak') {
+																// Cerai Talak: Suami = Penggugat (pihak1)
+																echo $row->tgl_penyerahan_akta_cerai ? date('d/m/Y', strtotime($row->tgl_penyerahan_akta_cerai)) : '-';
+															} else {
+																// Cerai Gugat: Suami = Tergugat (pihak2)
+																echo $row->tgl_penyerahan_akta_cerai_pihak2 ? date('d/m/Y', strtotime($row->tgl_penyerahan_akta_cerai_pihak2)) : '-';
 															}
-															if ($row->jenis_perkara_nama == 'Cerai Gugat') {
-																echo $row->tgl_AC_T;
-															} ?></td>
-														<td><?php if ($row->jenis_perkara_nama == 'Cerai Talak') {
-																echo $row->tgl_AC_T;
+															?>
+														</td>
+														<td>
+															<?php 
+															// Penyerahan Kepada Istri
+															if ($row->jenis_perkara_nama == 'Cerai Talak') {
+																// Cerai Talak: Istri = Tergugat (pihak2)
+																echo $row->tgl_penyerahan_akta_cerai_pihak2 ? date('d/m/Y', strtotime($row->tgl_penyerahan_akta_cerai_pihak2)) : '-';
+															} else {
+																// Cerai Gugat: Istri = Penggugat (pihak1)
+																echo $row->tgl_penyerahan_akta_cerai ? date('d/m/Y', strtotime($row->tgl_penyerahan_akta_cerai)) : '-';
 															}
-															if ($row->jenis_perkara_nama == 'Cerai Gugat') {
-																echo $row->tgl_AC_P;
-															} ?></td>
-
-														<td><?php if ($row->jenis_perkara_nama == 'Cerai Talak') {
-																if ($row->tgl_AC_P <> null) {
-																	echo $row->nama_p;
-																}
+															?>
+														</td>
+														<td>
+															<?php 
+															// Nama Suami
+															if ($row->jenis_perkara_nama == 'Cerai Talak') {
+																// Cerai Talak: Suami = Penggugat
+																echo character_limiter($row->nama_penggugat, 30);
+															} else {
+																// Cerai Gugat: Suami = Tergugat
+																echo character_limiter($row->nama_tergugat, 30);
 															}
-															if ($row->jenis_perkara_nama == 'Cerai Gugat') {
-																if ($row->tgl_AC_P <> null) {
-																	echo "";
-																}
-																if ($row->tgl_AC_T <> null) {
-																	echo $row->nama_t;
-																}
-															} ?></td>
-														<td><?php if ($row->jenis_perkara_nama == 'Cerai Talak') {
-																if ($row->tgl_AC_T <> null) {
-																	echo $row->nama_t;
-																}
+															?>
+														</td>
+														<td>
+															<?php 
+															// Nama Istri
+															if ($row->jenis_perkara_nama == 'Cerai Talak') {
+																// Cerai Talak: Istri = Tergugat
+																echo character_limiter($row->nama_tergugat, 30);
+															} else {
+																// Cerai Gugat: Istri = Penggugat
+																echo character_limiter($row->nama_penggugat, 30);
 															}
-															if ($row->jenis_perkara_nama == 'Cerai Gugat') {
-																if ($row->tgl_AC_T <> null) {
-																	echo "";
-																}
-																if ($row->tgl_AC_P <> null) {
-																	echo $row->nama_p;
-																}
-															} ?></td>
+															?>
+														</td>
 													</tr>
-											<?php endforeach;
-											
-											?>
+												<?php endforeach; ?>
+											<?php else: ?>
+												<tr>
+													<td colspan="10" class="text-center">Tidak ada data</td>
+												</tr>
+											<?php endif; ?>
 										</tbody>
 									</table>
 								</div>
@@ -150,24 +150,14 @@
 	</div>
 	<!-- ./wrapper -->
 
-	<!-- Page specific script -->
 	<script>
 		$(function() {
-			$("#DataTable").DataTable({
+			$("#example1").DataTable({
 				"responsive": true,
 				"lengthChange": false,
 				"autoWidth": false,
 				"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
 			}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-			$('#DataTable').DataTable({
-				"paging": true,
-				"lengthChange": false,
-				"searching": false,
-				"ordering": true,
-				"info": true,
-				"autoWidth": false,
-				"responsive": true,
-			});
 		});
 	</script>
 
