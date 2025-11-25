@@ -46,6 +46,42 @@
 						</li>
 					</ul>
 				</li>
+				<!-- Data Gugatan Menu -->
+				<li class="nav-item">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-database"></i>
+						<p>
+							DATA GUGATAN
+							<i class="fas fa-angle-left right"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?php echo site_url('Data_Perkara_Gugatan') ?>" class="nav-link">
+								<i class="fas fa-file-alt nav-icon"></i>
+								<p>Data Perkara Gugatan</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo site_url('Data_Cerai_Gugat') ?>" class="nav-link">
+								<i class="fas fa-heart-broken nav-icon"></i>
+								<p>Data Cerai Gugat</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo site_url('Statistik_Gugatan') ?>" class="nav-link">
+								<i class="fas fa-chart-pie nav-icon"></i>
+								<p>Statistik Gugatan</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="<?php echo site_url('Laporan_Gugatan') ?>" class="nav-link">
+								<i class="fas fa-file-pdf nav-icon"></i>
+								<p>Laporan Gugatan</p>
+							</a>
+						</li>
+					</ul>
+				</li>	
 
 				<!-- Delegasi Menu -->
 				<li class="nav-item">
@@ -132,12 +168,7 @@
 						</p>
 					</a>
 					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a href="<?php echo site_url('Data_Perkara_Gugatan') ?>" class="nav-link">
-								<i class="fas fa-file-alt nav-icon"></i>
-								<p>DATA PERKARA GUGATAN</p>
-							</a>
-						</li>
+						
 						<li class="nav-item">
 							<a href="<?php echo site_url('Lipa1') ?>" class="nav-link">
 								<i class="fas fa-clipboard-list nav-icon"></i>
