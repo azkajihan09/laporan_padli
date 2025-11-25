@@ -55,7 +55,6 @@
 											<option value="2025" <?php echo (isset($_POST['lap_tahun']) && $_POST['lap_tahun'] === '2025') ? 'selected' : ''; ?>>2025</option>
 										</select>
 										<input class="btn btn-primary" type="submit" name="btn" value="Tampilkan" />
-
 								</div>
 								<!-- /.card-header -->
 								<div class="card-body">
@@ -105,17 +104,16 @@
 		</div>
 	</div>
 	<!-- ./wrapper -->
-
 	<!-- Page specific script -->
 	<script>
 		$(function() {
-			$("#DataTable").DataTable({
+			$("#example1").DataTable({
 				"responsive": true,
 				"lengthChange": false,
 				"autoWidth": false,
 				"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
 			}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-			$('#DataTable').DataTable({
+			$('#example1').DataTable({
 				"paging": true,
 				"lengthChange": false,
 				"searching": false,
