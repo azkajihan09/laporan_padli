@@ -26,40 +26,29 @@
   			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
   				<li class="nav-item">
-  					<a href="<?php echo site_url('Dashboard') ?>" class="nav-link">
+  					<a href="#" class="nav-link">
   						<i class="nav-icon fas fa-chart-area"></i>
   						<p>
   							Dashboard
   							<i class="right fas fa-angle-left"></i>
   						</p>
   					</a>
-  				</li>
-
-  				<!-- <li class="nav-item">
-  					<a href="#" class="nav-link">
-  						<i class="nav-icon fas fa-table"></i>
-  						<p>
-  							Laporan lipa 1
-  							<i class="fas fa-angle-left right"></i>
-  						</p>
-  					</a>
   					<ul class="nav nav-treeview">
   						<li class="nav-item">
-  							<a href="<?php echo site_url('Lipa1') ?>" class="nav-link">
+  							<a href="<?php echo site_url('Dashboard/simple') ?>" class="nav-link">
   								<i class="far fa-circle nav-icon"></i>
-  								<p>Laporan LIPA 1</p>
+  								<p>Dashboard Simple</p>
   							</a>
   						</li>
   						<li class="nav-item">
-  							<a href="<?php echo site_url('perkara_banding') ?>" class="nav-link">
+  							<a href="<?php echo site_url('Dashboard') ?>" class="nav-link">
   								<i class="far fa-circle nav-icon"></i>
-  								<p>Perkara Banding</p>
+  								<p>Dashboard Modern</p>
   							</a>
   						</li>
-
-
   					</ul>
-  				</li> -->
+  				</li>
+
   				<li class="nav-item">
   					<a href="#" class="nav-link">
   						<i class="nav-icon fas fa-folder"></i>
@@ -163,6 +152,29 @@
   								<p>PERKARA PUTUSAN</p>
   							</a>
   						</li>
+						<li class="nav-item">
+  					<a href="#" class="nav-link">
+  						<i class="nav-icon fas fa-folder"></i>
+  						<p>
+  							DELEGASI
+  							<i class="fas fa-angle-left right"></i>
+  						</p>
+  					</a>
+  					<ul class="nav nav-treeview">
+  						<li class="nav-item active">
+  							<a href="<?php echo site_url('Delegasi') ?>" class="nav-link">
+  								<i class="far fa-circle nav-icon"></i>
+  								<p>Delegasi Masuk</p>
+  							</a>
+  						</li>
+  						<li class="nav-item">
+  							<a href="<?php echo site_url('Delegasi_k') ?>" class="nav-link">
+  								<i class="far fa-circle nav-icon"></i>
+  								<p>Delegasi Keluar</p>
+  							</a>
+  						</li>
+  					</ul>
+  				</li>
   					</ul>
 
 
