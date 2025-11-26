@@ -51,7 +51,7 @@
   					<a href="#" class="nav-link">
   						<i class="nav-icon fas fa-database"></i>
   						<p>
-  							DATA GUGATAN
+  							DATA PERKARA GUGATAN
   							<i class="fas fa-angle-left right"></i>
   						</p>
   					</a>
