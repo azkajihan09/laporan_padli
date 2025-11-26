@@ -48,8 +48,8 @@ class Laporan_putusan extends CI_Controller
 				break;
 		}
 
-		// Get list jenis perkara for dropdown
-		$data['jenis_perkara_list'] = $this->M_laporan_putusan->get_jenis_perkara_list();
+		// Get list jenis perkara gugatan for dropdown
+		$data['jenis_perkara_list'] = $this->M_laporan_putusan->get_jenis_perkara_gugatan();
 
 		// Get list status putusan for dropdown
 		$data['status_putusan_list'] = $this->M_laporan_putusan->get_status_putusan_list();

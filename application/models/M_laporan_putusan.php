@@ -194,6 +194,25 @@ class M_laporan_putusan extends CI_Model
 		return $query->result();
 	}
 
+	// Get daftar jenis perkara gugatan saja
+	public function get_jenis_perkara_gugatan()
+	{
+		$sql = "SELECT DISTINCT p.jenis_perkara_nama 
+                FROM perkara p 
+                JOIN perkara_putusan pp ON pp.perkara_id = p.perkara_id
+                WHERE p.jenis_perkara_nama IS NOT NULL 
+                  AND p.jenis_perkara_nama != ''
+                  AND (p.nomor_perkara LIKE '%Pdt.Gt%' 
+                       OR p.nomor_perkara LIKE '%Pdt.G/%' 
+                       OR p.nomor_perkara LIKE '%PDT.G%'
+                       OR p.jenis_perkara_nama LIKE '%Cerai Gugat%'
+                       OR p.jenis_perkara_nama = 'Cerai Gugat')
+                ORDER BY p.jenis_perkara_nama";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
 	// Get daftar status putusan yang tersedia
 	public function get_status_putusan_list()
 	{

@@ -85,7 +85,18 @@
 											<label>Jenis Perkara</label>
 											<select name="jenis_perkara" class="form-control" id="jenis_perkara">
 												<option value="Cerai Gugat" <?php echo ($selected_jenis == 'Cerai Gugat') ? 'selected' : ''; ?>>Cerai Gugat</option>
-												<option value="Cerai Talak" <?php echo ($selected_jenis == 'Cerai Talak') ? 'selected' : ''; ?>>Cerai Talak</option>
+												<?php if (isset($jenis_perkara_list) && count($jenis_perkara_list) > 0): ?>
+													<?php foreach ($jenis_perkara_list as $item): ?>
+														<?php if ($item->jenis_perkara_nama !== 'Cerai Gugat'): // Hindari duplikasi 
+														?>
+															<option value="<?php echo $item->jenis_perkara_nama; ?>" <?php echo ($selected_jenis == $item->jenis_perkara_nama) ? 'selected' : ''; ?>>
+																<?php echo $item->jenis_perkara_nama; ?>
+															</option>
+														<?php endif; ?>
+													<?php endforeach; ?>
+												<?php else: ?>
+													<option value="Cerai Talak" <?php echo ($selected_jenis == 'Cerai Talak') ? 'selected' : ''; ?>>Cerai Talak</option>
+												<?php endif; ?>
 											</select>
 										</div>
 									</div>
