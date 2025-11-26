@@ -5,147 +5,153 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Laporan_putusan extends CI_Controller
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->model('M_laporan_putusan');
-        $this->load->helper('url');
-        $this->load->helper('text');
-        $this->load->helper('date');
-    }
+	public function __construct()
+	{
+		parent::__construct();
 
-    public function index()
-    {
-        // Set default values if not posted
-        $lap_bulan = $this->input->post('lap_bulan') ?: date('m');
-        $lap_tahun = $this->input->post('lap_tahun') ?: date('Y');
-        $jenis_laporan = $this->input->post('jenis_laporan') ?: 'bulanan';
-        $status_putusan = $this->input->post('status_putusan') ?: 'semua';
-        $wilayah = $this->input->post('wilayah') ?: 'Semua';
-        $jenis_perkara = $this->input->post('jenis_perkara') ?: 'semua';
+		// Set timezone untuk menghindari PHP warning
+		if (!ini_get('date.timezone')) {
+			date_default_timezone_set('Asia/Jakarta');
+		}
 
-        // Get data based on report type
-        switch ($jenis_laporan) {
-            case 'tahunan':
-                $data['datafilter'] = $this->M_laporan_putusan->get_laporan_putusan_tahunan($lap_tahun, $status_putusan, $wilayah, $jenis_perkara);
-                $data['summary'] = $this->M_laporan_putusan->get_summary_putusan_tahunan($lap_tahun, $wilayah, $jenis_perkara);
-                break;
-            case 'custom':
-                $tanggal_mulai = $this->input->post('tanggal_mulai') ?: date('Y-m-01');
-                $tanggal_akhir = $this->input->post('tanggal_akhir') ?: date('Y-m-t');
-                $data['datafilter'] = $this->M_laporan_putusan->get_laporan_putusan_custom($tanggal_mulai, $tanggal_akhir, $status_putusan, $wilayah, $jenis_perkara);
-                $data['summary'] = $this->M_laporan_putusan->get_summary_putusan_custom($tanggal_mulai, $tanggal_akhir, $wilayah, $jenis_perkara);
-                break;
-            default: // bulanan
-                $data['datafilter'] = $this->M_laporan_putusan->get_laporan_putusan_bulanan($lap_tahun, $lap_bulan, $status_putusan, $wilayah, $jenis_perkara);
-                $data['summary'] = $this->M_laporan_putusan->get_summary_putusan_bulanan($lap_tahun, $lap_bulan, $wilayah, $jenis_perkara);
-                break;
-        }
+		$this->load->model('M_laporan_putusan');
+		$this->load->helper('url');
+		$this->load->helper('text');
+		$this->load->helper('date');
+	}
 
-        // Get list jenis perkara for dropdown
-        $data['jenis_perkara_list'] = $this->M_laporan_putusan->get_jenis_perkara_list();
+	public function index()
+	{
+		// Set default values if not posted
+		$lap_bulan = $this->input->post('lap_bulan') ?: date('m');
+		$lap_tahun = $this->input->post('lap_tahun') ?: date('Y');
+		$jenis_laporan = $this->input->post('jenis_laporan') ?: 'bulanan';
+		$status_putusan = $this->input->post('status_putusan') ?: 'semua';
+		$wilayah = $this->input->post('wilayah') ?: 'Semua';
+		$jenis_perkara = $this->input->post('jenis_perkara') ?: 'semua';
 
-        // Get list status putusan for dropdown
-        $data['status_putusan_list'] = $this->M_laporan_putusan->get_status_putusan_list();
+		// Get data based on report type
+		switch ($jenis_laporan) {
+			case 'tahunan':
+				$data['datafilter'] = $this->M_laporan_putusan->get_laporan_putusan_tahunan($lap_tahun, $status_putusan, $wilayah, $jenis_perkara);
+				$data['summary'] = $this->M_laporan_putusan->get_summary_putusan_tahunan($lap_tahun, $wilayah, $jenis_perkara);
+				break;
+			case 'custom':
+				$tanggal_mulai = $this->input->post('tanggal_mulai') ?: date('Y-m-01');
+				$tanggal_akhir = $this->input->post('tanggal_akhir') ?: date('Y-m-t');
+				$data['datafilter'] = $this->M_laporan_putusan->get_laporan_putusan_custom($tanggal_mulai, $tanggal_akhir, $status_putusan, $wilayah, $jenis_perkara);
+				$data['summary'] = $this->M_laporan_putusan->get_summary_putusan_custom($tanggal_mulai, $tanggal_akhir, $wilayah, $jenis_perkara);
+				break;
+			default: // bulanan
+				$data['datafilter'] = $this->M_laporan_putusan->get_laporan_putusan_bulanan($lap_tahun, $lap_bulan, $status_putusan, $wilayah, $jenis_perkara);
+				$data['summary'] = $this->M_laporan_putusan->get_summary_putusan_bulanan($lap_tahun, $lap_bulan, $wilayah, $jenis_perkara);
+				break;
+		}
 
-        // Pass selected values to view
-        $data['selected_bulan'] = $lap_bulan;
-        $data['selected_tahun'] = $lap_tahun;
-        $data['selected_jenis'] = $jenis_laporan;
-        $data['selected_status'] = $status_putusan;
-        $data['selected_wilayah'] = $wilayah;
-        $data['selected_jenis_perkara'] = $jenis_perkara;
+		// Get list jenis perkara for dropdown
+		$data['jenis_perkara_list'] = $this->M_laporan_putusan->get_jenis_perkara_list();
 
-        $this->load->view('template/new_header');
-        $this->load->view('template/new_sidebar');
-        $this->load->view('v_laporan_putusan', $data);
-        $this->load->view('template/new_footer');
-    }
+		// Get list status putusan for dropdown
+		$data['status_putusan_list'] = $this->M_laporan_putusan->get_status_putusan_list();
 
-    public function export_excel()
-    {
-        $lap_bulan = $this->input->post('lap_bulan') ?: date('m');
-        $lap_tahun = $this->input->post('lap_tahun') ?: date('Y');
-        $jenis_laporan = $this->input->post('jenis_laporan') ?: 'bulanan';
-        $status_putusan = $this->input->post('status_putusan') ?: 'semua';
-        $wilayah = $this->input->post('wilayah') ?: 'Semua';
-        $jenis_perkara = $this->input->post('jenis_perkara') ?: 'semua';
+		// Pass selected values to view
+		$data['selected_bulan'] = $lap_bulan;
+		$data['selected_tahun'] = $lap_tahun;
+		$data['selected_jenis'] = $jenis_laporan;
+		$data['selected_status'] = $status_putusan;
+		$data['selected_wilayah'] = $wilayah;
+		$data['selected_jenis_perkara'] = $jenis_perkara;
 
-        // Load PHPExcel library
-        require_once APPPATH . 'PHPExcel-1.8/Classes/PHPExcel.php';
+		$this->load->view('template/new_header');
+		$this->load->view('template/new_sidebar');
+		$this->load->view('v_laporan_putusan', $data);
+		$this->load->view('template/new_footer');
+	}
 
-        $excel = new PHPExcel();
-        $excel->getProperties()->setCreator('Laporan PADLI')
-            ->setLastModifiedBy('System')
-            ->setTitle('Laporan Putusan Perkara - ' . ucwords($status_putusan))
-            ->setSubject('Laporan Putusan Perkara')
-            ->setDescription('Laporan Putusan Perkara - Generated by System');
+	public function export_excel()
+	{
+		$lap_bulan = $this->input->post('lap_bulan') ?: date('m');
+		$lap_tahun = $this->input->post('lap_tahun') ?: date('Y');
+		$jenis_laporan = $this->input->post('jenis_laporan') ?: 'bulanan';
+		$status_putusan = $this->input->post('status_putusan') ?: 'semua';
+		$wilayah = $this->input->post('wilayah') ?: 'Semua';
+		$jenis_perkara = $this->input->post('jenis_perkara') ?: 'semua';
 
-        $excel->setActiveSheetIndex(0);
-        $excel->getActiveSheet()->setTitle('Laporan Putusan Perkara');
+		// Load PHPExcel library
+		require_once APPPATH . 'PHPExcel-1.8/Classes/PHPExcel.php';
 
-        // Set headers
-        $headers = [
-            'No',
-            'Nomor Perkara',
-            'Jenis Perkara',
-            'Pihak 1',
-            'Pihak 2',
-            'Tanggal Putusan',
-            'Status Putusan',
-            'Ringkasan Amar',
-            'Hari Sejak Putusan'
-        ];
+		$excel = new PHPExcel();
+		$excel->getProperties()->setCreator('Laporan PADLI')
+			->setLastModifiedBy('System')
+			->setTitle('Laporan Putusan Perkara - ' . ucwords($status_putusan))
+			->setSubject('Laporan Putusan Perkara')
+			->setDescription('Laporan Putusan Perkara - Generated by System');
 
-        $col = 'A';
-        foreach ($headers as $header) {
-            $excel->getActiveSheet()->setCellValue($col . '1', $header);
-            $excel->getActiveSheet()->getStyle($col . '1')->getFont()->setBold(true);
-            $col++;
-        }
+		$excel->setActiveSheetIndex(0);
+		$excel->getActiveSheet()->setTitle('Laporan Putusan Perkara');
 
-        // Get data
-        switch ($jenis_laporan) {
-            case 'tahunan':
-                $data = $this->M_laporan_putusan->get_laporan_putusan_tahunan($lap_tahun, $status_putusan, $wilayah, $jenis_perkara);
-                break;
-            case 'custom':
-                $tanggal_mulai = $this->input->post('tanggal_mulai') ?: date('Y-m-01');
-                $tanggal_akhir = $this->input->post('tanggal_akhir') ?: date('Y-m-t');
-                $data = $this->M_laporan_putusan->get_laporan_putusan_custom($tanggal_mulai, $tanggal_akhir, $status_putusan, $wilayah, $jenis_perkara);
-                break;
-            default:
-                $data = $this->M_laporan_putusan->get_laporan_putusan_bulanan($lap_tahun, $lap_bulan, $status_putusan, $wilayah, $jenis_perkara);
-                break;
-        }
+		// Set headers
+		$headers = [
+			'No',
+			'Nomor Perkara',
+			'Jenis Perkara',
+			'Pihak 1',
+			'Pihak 2',
+			'Tanggal Putusan',
+			'Status Putusan',
+			'Ringkasan Amar',
+			'Hari Sejak Putusan'
+		];
 
-        // Fill data
-        $row = 2;
-        $no = 1;
-        foreach ($data as $item) {
-            $excel->getActiveSheet()->setCellValue('A' . $row, $no++);
-            $excel->getActiveSheet()->setCellValue('B' . $row, $item->nomor_perkara);
-            $excel->getActiveSheet()->setCellValue('C' . $row, $item->jenis_perkara_nama);
-            $excel->getActiveSheet()->setCellValue('D' . $row, $item->pihak1);
-            $excel->getActiveSheet()->setCellValue('E' . $row, $item->pihak2);
-            $excel->getActiveSheet()->setCellValue('F' . $row, $item->tanggal_putusan);
-            $excel->getActiveSheet()->setCellValue('G' . $row, $item->status_putusan_nama);
-            $excel->getActiveSheet()->setCellValue('H' . $row, $item->ringkasan_amar);
-            $excel->getActiveSheet()->setCellValue('I' . $row, $item->hari_sejak_putusan);
-            $row++;
-        }
+		$col = 'A';
+		foreach ($headers as $header) {
+			$excel->getActiveSheet()->setCellValue($col . '1', $header);
+			$excel->getActiveSheet()->getStyle($col . '1')->getFont()->setBold(true);
+			$col++;
+		}
 
-        // Auto size columns
-        foreach (range('A', 'I') as $columnID) {
-            $excel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
-        }
+		// Get data
+		switch ($jenis_laporan) {
+			case 'tahunan':
+				$data = $this->M_laporan_putusan->get_laporan_putusan_tahunan($lap_tahun, $status_putusan, $wilayah, $jenis_perkara);
+				break;
+			case 'custom':
+				$tanggal_mulai = $this->input->post('tanggal_mulai') ?: date('Y-m-01');
+				$tanggal_akhir = $this->input->post('tanggal_akhir') ?: date('Y-m-t');
+				$data = $this->M_laporan_putusan->get_laporan_putusan_custom($tanggal_mulai, $tanggal_akhir, $status_putusan, $wilayah, $jenis_perkara);
+				break;
+			default:
+				$data = $this->M_laporan_putusan->get_laporan_putusan_bulanan($lap_tahun, $lap_bulan, $status_putusan, $wilayah, $jenis_perkara);
+				break;
+		}
 
-        // Output
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Laporan_Putusan_Perkara_' . date('Y-m-d') . '.xls"');
-        header('Cache-Control: max-age=0');
+		// Fill data
+		$row = 2;
+		$no = 1;
+		foreach ($data as $item) {
+			$excel->getActiveSheet()->setCellValue('A' . $row, $no++);
+			$excel->getActiveSheet()->setCellValue('B' . $row, $item->nomor_perkara);
+			$excel->getActiveSheet()->setCellValue('C' . $row, $item->jenis_perkara_nama);
+			$excel->getActiveSheet()->setCellValue('D' . $row, $item->pihak1);
+			$excel->getActiveSheet()->setCellValue('E' . $row, $item->pihak2);
+			$excel->getActiveSheet()->setCellValue('F' . $row, $item->tanggal_putusan);
+			$excel->getActiveSheet()->setCellValue('G' . $row, $item->status_putusan_nama);
+			$excel->getActiveSheet()->setCellValue('H' . $row, $item->ringkasan_amar);
+			$excel->getActiveSheet()->setCellValue('I' . $row, $item->hari_sejak_putusan);
+			$row++;
+		}
 
-        $objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
-        $objWriter->save('php://output');
-    }
+		// Auto size columns
+		foreach (range('A', 'I') as $columnID) {
+			$excel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+		}
+
+		// Output
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="Laporan_Putusan_Perkara_' . date('Y-m-d') . '.xls"');
+		header('Cache-Control: max-age=0');
+
+		$objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
+		$objWriter->save('php://output');
+	}
 }
