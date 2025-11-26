@@ -838,7 +838,7 @@
 			<?php if ($selected_analisis == 'demografis_penggugat'): ?>
 				// For demografis, use switchChart function with default age chart
 				switchChart('age');
-				
+
 				// Add event listeners for chart type buttons
 				document.querySelectorAll('[data-chart-type]').forEach(button => {
 					button.addEventListener('click', function() {
