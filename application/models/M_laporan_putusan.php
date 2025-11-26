@@ -5,10 +5,11 @@ class M_laporan_putusan extends CI_Model
 {
 
     // Get laporan putusan bulanan
-    public function get_laporan_putusan_bulanan($lap_tahun, $lap_bulan, $status_putusan = 'semua', $wilayah = 'Semua')
+    public function get_laporan_putusan_bulanan($lap_tahun, $lap_bulan, $status_putusan = 'semua', $wilayah = 'Semua', $jenis_perkara = 'semua')
     {
         $where_wilayah = $this->_get_wilayah_condition($wilayah);
         $where_status = $this->_get_status_condition($status_putusan);
+        $where_jenis = $this->_get_jenis_perkara_condition($jenis_perkara);
 
         $sql = "SELECT 
 				p.nomor_perkara,
@@ -27,6 +28,7 @@ class M_laporan_putusan extends CI_Model
 				AND MONTH(pp.tanggal_putusan) = ?
 				$where_status
 				$where_wilayah
+				$where_jenis
 			ORDER BY pp.tanggal_putusan DESC";
 
         $query = $this->db->query($sql, array($lap_tahun, $lap_bulan));
@@ -34,10 +36,11 @@ class M_laporan_putusan extends CI_Model
     }
 
     // Get laporan putusan tahunan
-    public function get_laporan_putusan_tahunan($lap_tahun, $status_putusan = 'semua', $wilayah = 'Semua')
+    public function get_laporan_putusan_tahunan($lap_tahun, $status_putusan = 'semua', $wilayah = 'Semua', $jenis_perkara = 'semua')
     {
         $where_wilayah = $this->_get_wilayah_condition($wilayah);
         $where_status = $this->_get_status_condition($status_putusan);
+        $where_jenis = $this->_get_jenis_perkara_condition($jenis_perkara);
 
         $sql = "SELECT 
 				p.nomor_perkara,
@@ -55,6 +58,7 @@ class M_laporan_putusan extends CI_Model
 				AND YEAR(pp.tanggal_putusan) = ?
 				$where_status
 				$where_wilayah
+				$where_jenis
 			ORDER BY pp.tanggal_putusan DESC";
 
         $query = $this->db->query($sql, array($lap_tahun));
@@ -62,10 +66,11 @@ class M_laporan_putusan extends CI_Model
     }
 
     // Get laporan putusan custom date range
-    public function get_laporan_putusan_custom($tanggal_mulai, $tanggal_akhir, $status_putusan = 'semua', $wilayah = 'Semua')
+    public function get_laporan_putusan_custom($tanggal_mulai, $tanggal_akhir, $status_putusan = 'semua', $wilayah = 'Semua', $jenis_perkara = 'semua')
     {
         $where_wilayah = $this->_get_wilayah_condition($wilayah);
         $where_status = $this->_get_status_condition($status_putusan);
+        $where_jenis = $this->_get_jenis_perkara_condition($jenis_perkara);
 
         $sql = "SELECT 
 				p.nomor_perkara,
@@ -83,6 +88,7 @@ class M_laporan_putusan extends CI_Model
 				AND pp.tanggal_putusan BETWEEN ? AND ?
 				$where_status
 				$where_wilayah
+				$where_jenis
 			ORDER BY pp.tanggal_putusan DESC";
 
         $query = $this->db->query($sql, array($tanggal_mulai, $tanggal_akhir));
@@ -90,9 +96,10 @@ class M_laporan_putusan extends CI_Model
     }
 
     // Get summary putusan bulanan
-    public function get_summary_putusan_bulanan($lap_tahun, $lap_bulan, $wilayah = 'Semua')
+    public function get_summary_putusan_bulanan($lap_tahun, $lap_bulan, $wilayah = 'Semua', $jenis_perkara = 'semua')
     {
         $where_wilayah = $this->_get_wilayah_condition($wilayah);
+        $where_jenis = $this->_get_jenis_perkara_condition($jenis_perkara);
 
         $sql = "SELECT 
 				COUNT(*) as total_putusan,
@@ -116,16 +123,18 @@ class M_laporan_putusan extends CI_Model
 			WHERE p.jenis_perkara_nama IS NOT NULL
 				AND YEAR(pp.tanggal_putusan) = ?
 				AND MONTH(pp.tanggal_putusan) = ?
-				$where_wilayah";
+				$where_wilayah
+				$where_jenis";
 
         $query = $this->db->query($sql, array($lap_tahun, $lap_bulan));
         return $query->row();
     }
 
     // Get summary putusan tahunan
-    public function get_summary_putusan_tahunan($lap_tahun, $wilayah = 'Semua')
+    public function get_summary_putusan_tahunan($lap_tahun, $wilayah = 'Semua', $jenis_perkara = 'semua')
     {
         $where_wilayah = $this->_get_wilayah_condition($wilayah);
+        $where_jenis = $this->_get_jenis_perkara_condition($jenis_perkara);
 
         $sql = "SELECT 
 				COUNT(*) as total_putusan,
@@ -148,16 +157,18 @@ class M_laporan_putusan extends CI_Model
 			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
 			WHERE p.jenis_perkara_nama IS NOT NULL
 				AND YEAR(pp.tanggal_putusan) = ?
-				$where_wilayah";
+				$where_wilayah
+				$where_jenis";
 
         $query = $this->db->query($sql, array($lap_tahun));
         return $query->row();
     }
 
     // Get summary putusan custom
-    public function get_summary_putusan_custom($tanggal_mulai, $tanggal_akhir, $wilayah = 'Semua')
+    public function get_summary_putusan_custom($tanggal_mulai, $tanggal_akhir, $wilayah = 'Semua', $jenis_perkara = 'semua')
     {
         $where_wilayah = $this->_get_wilayah_condition($wilayah);
+        $where_jenis = $this->_get_jenis_perkara_condition($jenis_perkara);
 
         $sql = "SELECT 
 				COUNT(*) as total_putusan,
@@ -180,10 +191,25 @@ class M_laporan_putusan extends CI_Model
 			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
 			WHERE p.jenis_perkara_nama IS NOT NULL
 				AND pp.tanggal_putusan BETWEEN ? AND ?
-				$where_wilayah";
+				$where_wilayah
+				$where_jenis";
 
         $query = $this->db->query($sql, array($tanggal_mulai, $tanggal_akhir));
         return $query->row();
+    }
+
+    // Get daftar jenis perkara yang tersedia
+    public function get_jenis_perkara_list()
+    {
+        $sql = "SELECT DISTINCT p.jenis_perkara_nama 
+                FROM perkara p 
+                JOIN perkara_putusan pp ON pp.perkara_id = p.perkara_id
+                WHERE p.jenis_perkara_nama IS NOT NULL 
+                  AND p.jenis_perkara_nama != ''
+                ORDER BY p.jenis_perkara_nama";
+
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 
     // Private helper methods
@@ -205,6 +231,13 @@ class M_laporan_putusan extends CI_Model
         }
 
         return '';
+    }
+
+    private function _get_jenis_perkara_condition($jenis_perkara)
+    {
+        if ($jenis_perkara === 'semua' || empty($jenis_perkara)) return '';
+
+        return " AND p.jenis_perkara_nama = '" . $this->db->escape_str($jenis_perkara) . "'";
     }
 
     private function _get_status_condition($status_putusan)

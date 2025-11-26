@@ -18,6 +18,11 @@
                                         <?php echo ucwords(str_replace('_', ' ', $selected_status)); ?>
                                     </span>
                                 <?php endif; ?>
+                                <?php if (isset($selected_jenis_perkara) && $selected_jenis_perkara !== 'semua'): ?>
+                                    <span class="badge badge-primary">
+                                        <?php echo $selected_jenis_perkara; ?>
+                                    </span>
+                                <?php endif; ?>
                             </h1>
                         </div>
                         <div class="col-sm-6">
@@ -138,6 +143,21 @@
                                                         <option value="tidak_dapat_diterima" <?php echo (isset($selected_status) && $selected_status === 'tidak_dapat_diterima') ? 'selected' : ''; ?>>NO / Tidak Dapat Diterima</option>
                                                         <option value="dicabut" <?php echo (isset($selected_status) && $selected_status === 'dicabut') ? 'selected' : ''; ?>>Dicabut</option>
                                                         <option value="digugurkan" <?php echo (isset($selected_status) && $selected_status === 'digugurkan') ? 'selected' : ''; ?>>Digugurkan</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>Jenis Perkara:</label>
+                                                    <select name="jenis_perkara" class="form-control">
+                                                        <option value="semua" <?php echo (isset($selected_jenis_perkara) && $selected_jenis_perkara === 'semua') ? 'selected' : ''; ?>>Semua Jenis</option>
+                                                        <?php if (isset($jenis_perkara_list) && count($jenis_perkara_list) > 0): ?>
+                                                            <?php foreach ($jenis_perkara_list as $item): ?>
+                                                                <option value="<?php echo $item->jenis_perkara_nama; ?>" <?php echo (isset($selected_jenis_perkara) && $selected_jenis_perkara === $item->jenis_perkara_nama) ? 'selected' : ''; ?>>
+                                                                    <?php echo $item->jenis_perkara_nama; ?>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
                                                     </select>
                                                 </div>
                                             </div>
