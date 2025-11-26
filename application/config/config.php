@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://192.168.1.11/laporan_perkara/';
+// $config['base_url'] = 'http://192.168.1.11/laporan_perkara/';
 // $config['base_url'] = 'http://localhost:8080/laporan_padli/';
-// $config['base_url'] = 'http://localhost/laporan_padli/';
+$config['base_url'] = 'http://localhost/laporan_padli/';
 
 
 /*
@@ -495,6 +495,19 @@ $config['time_reference'] = 'local';
 
 /*
 |--------------------------------------------------------------------------
+| Default Timezone
+|--------------------------------------------------------------------------
+|
+| Set the default timezone for the application.
+| This will be used by PHP date functions.
+|
+*/
+// Set timezone for Indonesia (WIB - Western Indonesia Time)
+date_default_timezone_set('Asia/Jakarta');
+$config['timezone'] = 'Asia/Jakarta';
+
+/*
+|--------------------------------------------------------------------------
 | Rewrite PHP Short Tags
 |--------------------------------------------------------------------------
 |
@@ -527,4 +540,3 @@ $config['proxy_ips'] = '';
 
 // $config['composer_autoload'] = 'vendor/autoload.php';
 $config['composer_autoload'] = FCPATH . 'vendor/autoload.php';
-
