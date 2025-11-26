@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +16,7 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 	<!-- Theme style -->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/build/css/adminlte.min.css">
-	
+
 	<!-- jQuery -->
 	<script src="<?php echo base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
@@ -60,52 +61,52 @@
 
 			<!-- Summary Statistics -->
 			<?php if (isset($summary)): ?>
-			<section class="content">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-lg-4 col-6">
-							<div class="small-box bg-info">
-								<div class="inner">
-									<h3><?php echo isset($summary->total_masuk) ? $summary->total_masuk : 0; ?></h3>
-									<p>Total Perkara Masuk</p>
-								</div>
-								<div class="icon">
-									<i class="fas fa-inbox"></i>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-6">
-							<div class="small-box bg-success">
-								<div class="inner">
-									<h3><?php echo isset($summary->total_putus) ? $summary->total_putus : 0; ?></h3>
-									<p>Total Perkara Putus</p>
-								</div>
-								<div class="icon">
-									<i class="fas fa-gavel"></i>
+				<section class="content">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-lg-4 col-6">
+								<div class="small-box bg-info">
+									<div class="inner">
+										<h3><?php echo isset($summary->total_masuk) ? $summary->total_masuk : 0; ?></h3>
+										<p>Total Perkara Masuk</p>
+									</div>
+									<div class="icon">
+										<i class="fas fa-inbox"></i>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-lg-4 col-6">
-							<div class="small-box bg-warning">
-								<div class="inner">
-									<h3>
-										<?php 
-										$total_masuk = isset($summary->total_masuk) ? $summary->total_masuk : 0;
-										$total_putus = isset($summary->total_putus) ? $summary->total_putus : 0;
-										$persentase = ($total_masuk > 0) ? round(($total_putus / $total_masuk) * 100, 1) : 0;
-										echo $persentase;
-										?>%
-									</h3>
-									<p>Tingkat Penyelesaian</p>
+							<div class="col-lg-4 col-6">
+								<div class="small-box bg-success">
+									<div class="inner">
+										<h3><?php echo isset($summary->total_putus) ? $summary->total_putus : 0; ?></h3>
+										<p>Total Perkara Putus</p>
+									</div>
+									<div class="icon">
+										<i class="fas fa-gavel"></i>
+									</div>
 								</div>
-								<div class="icon">
-									<i class="fas fa-chart-pie"></i>
+							</div>
+							<div class="col-lg-4 col-6">
+								<div class="small-box bg-warning">
+									<div class="inner">
+										<h3>
+											<?php
+											$total_masuk = isset($summary->total_masuk) ? $summary->total_masuk : 0;
+											$total_putus = isset($summary->total_putus) ? $summary->total_putus : 0;
+											$persentase = ($total_masuk > 0) ? round(($total_putus / $total_masuk) * 100, 1) : 0;
+											echo $persentase;
+											?>%
+										</h3>
+										<p>Tingkat Penyelesaian</p>
+									</div>
+									<div class="icon">
+										<i class="fas fa-chart-pie"></i>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</section>
+				</section>
 			<?php endif; ?>
 
 			<!-- Main content -->
@@ -129,13 +130,22 @@
 													</select>
 												</div>
 											</div>
-											<div class="col-md-2">
+											<div class="col-md-3">
 												<div class="form-group">
 													<label>Jenis Perkara:</label>
 													<select name="jenis_perkara" class="form-control">
-														<option value="Dispensasi Kawin" <?php echo (isset($selected_jenis_perkara) && $selected_jenis_perkara === 'Dispensasi Kawin') ? 'selected' : ''; ?>>Dispensasi Kawin</option>
-														<option value="Istbat Nikah" <?php echo (isset($selected_jenis_perkara) && $selected_jenis_perkara === 'Istbat Nikah') ? 'selected' : ''; ?>>Istbat Nikah</option>
-														<option value="P3HP/Penetapan Ahli Waris" <?php echo (isset($selected_jenis_perkara) && $selected_jenis_perkara === 'P3HP/Penetapan Ahli Waris') ? 'selected' : ''; ?>>P3HP/Penetapan Ahli Waris</option>
+														<?php if (isset($jenis_perkara_list) && !empty($jenis_perkara_list)): ?>
+															<?php foreach ($jenis_perkara_list as $perkara): ?>
+																<option value="<?php echo htmlspecialchars($perkara->jenis_perkara_nama); ?>"
+																	<?php echo (isset($selected_jenis_perkara) && $selected_jenis_perkara === $perkara->jenis_perkara_nama) ? 'selected' : ''; ?>>
+																	<?php echo htmlspecialchars($perkara->jenis_perkara_nama); ?>
+																</option>
+															<?php endforeach; ?>
+														<?php else: ?>
+															<option value="Dispensasi Kawin">Dispensasi Kawin</option>
+															<option value="Istbat Nikah">Istbat Nikah</option>
+															<option value="P3HP/Penetapan Ahli Waris">P3HP/Penetapan Ahli Waris</option>
+														<?php endif; ?>
 													</select>
 												</div>
 											</div>
@@ -172,10 +182,10 @@
 												<div class="form-group">
 													<label>Tahun:</label>
 													<select name="lap_tahun" class="form-control">
-														<?php for($year = 2016; $year <= date('Y')+1; $year++): ?>
-														<option value="<?php echo $year; ?>" <?php echo (isset($selected_tahun) && $selected_tahun == $year) ? 'selected' : ''; ?>>
-															<?php echo $year; ?>
-														</option>
+														<?php for ($year = 2016; $year <= date('Y') + 1; $year++): ?>
+															<option value="<?php echo $year; ?>" <?php echo (isset($selected_tahun) && $selected_tahun == $year) ? 'selected' : ''; ?>>
+																<?php echo $year; ?>
+															</option>
 														<?php endfor; ?>
 													</select>
 												</div>
@@ -233,34 +243,35 @@
 											</thead>
 											<tbody>
 												<?php if (isset($datafilter) && !empty($datafilter)): ?>
-													<?php $no = 1; foreach ($datafilter as $row): ?>
-													<tr>
-														<td><?php echo $no++; ?></td>
-														<td><strong><?php echo $row->KECAMATAN; ?></strong></td>
-														<td class="text-center">
-															<span class="badge badge-info"><?php echo number_format($row->PERKARA_MASUK, 0, ',', '.'); ?></span>
-														</td>
-														<td class="text-center">
-															<span class="badge badge-success"><?php echo number_format($row->PERKARA_PUTUS, 0, ',', '.'); ?></span>
-														</td>
-														<td class="text-center">
-															<?php $sisa = $row->PERKARA_MASUK - $row->PERKARA_PUTUS; ?>
-															<span class="badge <?php echo ($sisa > 0) ? 'badge-warning' : 'badge-secondary'; ?>">
-																<?php echo number_format($sisa, 0, ',', '.'); ?>
-															</span>
-														</td>
-														<td class="text-center">
-															<?php 
-															$persentase = ($row->PERKARA_MASUK > 0) ? round(($row->PERKARA_PUTUS / $row->PERKARA_MASUK) * 100, 1) : 0;
-															$badge_class = '';
-															if ($persentase >= 90) $badge_class = 'badge-success';
-															elseif ($persentase >= 70) $badge_class = 'badge-info';
-															elseif ($persentase >= 50) $badge_class = 'badge-warning';
-															else $badge_class = 'badge-danger';
-															?>
-															<span class="badge <?php echo $badge_class; ?>"><?php echo $persentase; ?>%</span>
-														</td>
-													</tr>
+													<?php $no = 1;
+													foreach ($datafilter as $row): ?>
+														<tr>
+															<td><?php echo $no++; ?></td>
+															<td><strong><?php echo $row->KECAMATAN; ?></strong></td>
+															<td class="text-center">
+																<span class="badge badge-info"><?php echo number_format($row->PERKARA_MASUK, 0, ',', '.'); ?></span>
+															</td>
+															<td class="text-center">
+																<span class="badge badge-success"><?php echo number_format($row->PERKARA_PUTUS, 0, ',', '.'); ?></span>
+															</td>
+															<td class="text-center">
+																<?php $sisa = $row->PERKARA_MASUK - $row->PERKARA_PUTUS; ?>
+																<span class="badge <?php echo ($sisa > 0) ? 'badge-warning' : 'badge-secondary'; ?>">
+																	<?php echo number_format($sisa, 0, ',', '.'); ?>
+																</span>
+															</td>
+															<td class="text-center">
+																<?php
+																$persentase = ($row->PERKARA_MASUK > 0) ? round(($row->PERKARA_PUTUS / $row->PERKARA_MASUK) * 100, 1) : 0;
+																$badge_class = '';
+																if ($persentase >= 90) $badge_class = 'badge-success';
+																elseif ($persentase >= 70) $badge_class = 'badge-info';
+																elseif ($persentase >= 50) $badge_class = 'badge-warning';
+																else $badge_class = 'badge-danger';
+																?>
+																<span class="badge <?php echo $badge_class; ?>"><?php echo $persentase; ?>%</span>
+															</td>
+														</tr>
 													<?php endforeach; ?>
 												<?php else: ?>
 													<tr>
@@ -273,30 +284,30 @@
 												<?php endif; ?>
 											</tbody>
 											<?php if (isset($datafilter) && !empty($datafilter)): ?>
-											<?php 
-											$total_masuk = array_sum(array_column($datafilter, 'PERKARA_MASUK'));
-											$total_putus = array_sum(array_column($datafilter, 'PERKARA_PUTUS'));
-											$total_sisa = $total_masuk - $total_putus;
-											$total_persentase = ($total_masuk > 0) ? round(($total_putus / $total_masuk) * 100, 1) : 0;
-											?>
-											<tfoot class="bg-light">
-												<tr class="font-weight-bold">
-													<th colspan="2">TOTAL KESELURUHAN</th>
-													<th class="text-center"><?php echo number_format($total_masuk, 0, ',', '.'); ?></th>
-													<th class="text-center"><?php echo number_format($total_putus, 0, ',', '.'); ?></th>
-													<th class="text-center"><?php echo number_format($total_sisa, 0, ',', '.'); ?></th>
-													<th class="text-center">
-														<?php 
-														$total_badge_class = '';
-														if ($total_persentase >= 90) $total_badge_class = 'badge-success';
-														elseif ($total_persentase >= 70) $total_badge_class = 'badge-info';
-														elseif ($total_persentase >= 50) $total_badge_class = 'badge-warning';
-														else $total_badge_class = 'badge-danger';
-														?>
-														<span class="badge <?php echo $total_badge_class; ?>"><?php echo $total_persentase; ?>%</span>
-													</th>
-												</tr>
-											</tfoot>
+												<?php
+												$total_masuk = array_sum(array_column($datafilter, 'PERKARA_MASUK'));
+												$total_putus = array_sum(array_column($datafilter, 'PERKARA_PUTUS'));
+												$total_sisa = $total_masuk - $total_putus;
+												$total_persentase = ($total_masuk > 0) ? round(($total_putus / $total_masuk) * 100, 1) : 0;
+												?>
+												<tfoot class="bg-light">
+													<tr class="font-weight-bold">
+														<th colspan="2">TOTAL KESELURUHAN</th>
+														<th class="text-center"><?php echo number_format($total_masuk, 0, ',', '.'); ?></th>
+														<th class="text-center"><?php echo number_format($total_putus, 0, ',', '.'); ?></th>
+														<th class="text-center"><?php echo number_format($total_sisa, 0, ',', '.'); ?></th>
+														<th class="text-center">
+															<?php
+															$total_badge_class = '';
+															if ($total_persentase >= 90) $total_badge_class = 'badge-success';
+															elseif ($total_persentase >= 70) $total_badge_class = 'badge-info';
+															elseif ($total_persentase >= 50) $total_badge_class = 'badge-warning';
+															else $total_badge_class = 'badge-danger';
+															?>
+															<span class="badge <?php echo $total_badge_class; ?>"><?php echo $total_persentase; ?>%</span>
+														</th>
+													</tr>
+												</tfoot>
 											<?php endif; ?>
 										</table>
 									</div>
@@ -320,21 +331,21 @@
 	<script>
 		// Variabel global untuk menyimpan instance DataTable
 		var dataTable;
-		
+
 		$(document).ready(function() {
 			initializeDataTable();
 		});
-		
+
 		function initializeDataTable() {
 			// Destroy existing DataTable completely
 			if ($.fn.DataTable.isDataTable('#example1')) {
 				$('#example1').DataTable().clear().destroy();
 				$('#example1').empty();
 			}
-			
+
 			// Clear any existing HTML
 			$('#example1').removeData();
-			
+
 			// Re-initialize DataTable
 			setTimeout(function() {
 				dataTable = $("#example1").DataTable({
@@ -347,7 +358,10 @@
 					"info": true,
 					"searching": true,
 					"pageLength": 10,
-					"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Semua"]],
+					"lengthMenu": [
+						[10, 25, 50, -1],
+						[10, 25, 50, "Semua"]
+					],
 					"language": {
 						"search": "Pencarian:",
 						"lengthMenu": "Tampilkan _MENU_ data per halaman",
@@ -362,8 +376,7 @@
 							"previous": "Sebelumnya"
 						}
 					},
-					"buttons": [
-						{
+					"buttons": [{
 							extend: 'copy',
 							text: '<i class="fas fa-copy"></i> Copy',
 							className: 'btn btn-primary btn-sm'
@@ -392,7 +405,7 @@
 						}
 					]
 				});
-				
+
 				// Add buttons to wrapper after table is ready
 				if (dataTable.buttons && dataTable.buttons().container) {
 					dataTable.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
@@ -435,10 +448,10 @@
 			exportInput.name = 'export_excel';
 			exportInput.value = '1';
 			form.appendChild(exportInput);
-			
+
 			// Temporarily modify action for export
 			form.action = '<?php echo base_url(); ?>index.php/Data_Permohonan/export_excel';
-			
+
 			// Submit form
 			document.body.appendChild(form);
 			form.submit();
@@ -464,31 +477,39 @@
 			background-color: #343a40 !important;
 			color: white !important;
 		}
+
 		.small-box .icon {
 			transition: all 0.3s;
 		}
+
 		.small-box:hover .icon {
 			transform: scale(1.1);
 		}
+
 		.badge {
 			font-size: 0.9em;
 			padding: 0.5em 0.75em;
 		}
+
 		.table-responsive {
 			border: 1px solid #dee2e6;
 			border-radius: 0.375rem;
 		}
+
 		.card-header {
 			background: linear-gradient(45deg, #007bff, #6610f2);
 			color: white;
 		}
+
 		.btn-block {
 			border-radius: 0.375rem;
 		}
+
 		.alert {
 			border-radius: 0.5rem;
 		}
 	</style>
 
 </body>
+
 </html>
