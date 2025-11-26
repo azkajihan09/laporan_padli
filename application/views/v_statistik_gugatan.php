@@ -163,6 +163,21 @@
 							</div>
 						</div>
 						<div class="card-body">
+							<!-- Chart Type Selector -->
+							<div id="chartControls" class="chart-controls mb-3" style="display: none;">
+								<div class="btn-group" role="group" aria-label="Chart Type">
+									<button type="button" class="btn btn-outline-primary active" data-chart-type="age">
+										<i class="fas fa-birthday-cake"></i> Usia
+									</button>
+									<button type="button" class="btn btn-outline-success" data-chart-type="gender">
+										<i class="fas fa-venus-mars"></i> Jenis Kelamin
+									</button>
+									<button type="button" class="btn btn-outline-info" data-chart-type="profession">
+										<i class="fas fa-briefcase"></i> Pekerjaan
+									</button>
+								</div>
+							</div>
+
 							<div class="chart-container">
 								<canvas id="mainChart"></canvas>
 							</div>
@@ -317,402 +332,527 @@
 	</section>
 </div>
 
-<!-- JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- JavaScript akan dimuat dari footer -->
 <script>
-	// Tunggu sampai document ready
-	document.addEventListener('DOMContentLoaded', function() {
+	// Pastikan semua library sudah dimuat dari footer
+	function initializeStatistikGugatan() {
 		// Initialize DataTable
 		if (typeof $ !== 'undefined' && typeof $.fn.DataTable !== 'undefined' && $('#dataTable').length) {
-			$('#dataTable').DataTable({
-				"responsive": true,
-				"lengthChange": true,
-				"autoWidth": false,
-				"paging": true,
-				"searching": true,
-				"ordering": true,
-				"info": true,
-				"pageLength": 25,
-				"language": {
-					"search": "Cari:",
-					"lengthMenu": "Tampilkan _MENU_ data per halaman",
-					"zeroRecords": "Data tidak ditemukan",
-					"info": "Menampilkan halaman _PAGE_ dari _PAGES_",
-					"infoEmpty": "Tidak ada data tersedia",
-					"infoFiltered": "(difilter dari _MAX_ total data)",
-					"paginate": {
-						"first": "Pertama",
-						"last": "Terakhir",
-						"next": "Selanjutnya",
-						"previous": "Sebelumnya"
+			try {
+				$('#dataTable').DataTable({
+					"responsive": true,
+					"lengthChange": true,
+					"autoWidth": false,
+					"paging": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"pageLength": 25,
+					"language": {
+						"search": "Cari:",
+						"lengthMenu": "Tampilkan _MENU_ data per halaman",
+						"zeroRecords": "Data tidak ditemukan",
+						"info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+						"infoEmpty": "Tidak ada data tersedia",
+						"infoFiltered": "(difilter dari _MAX_ total data)",
+						"paginate": {
+							"first": "Pertama",
+							"last": "Terakhir",
+							"next": "Selanjutnya",
+							"previous": "Sebelumnya"
+						}
 					}
-				}
-			});
+				});
+			} catch (e) {
+				console.log('DataTable initialization failed:', e);
+			}
 		}
 
 		// Create Chart
-		const ctx = document.getElementById('mainChart');
-		if (ctx) {
-			createChart();
+		if ($('#mainChart').length) {
+			try {
+				createChart();
+			} catch (e) {
+				console.log('Chart creation failed:', e);
+			}
 		}
-	});
+	}
 
 	function createChart() {
-		const ctx = document.getElementById('mainChart').getContext('2d');
-		const analisisType = '<?php echo $selected_analisis; ?>';
+		try {
+			const ctx = document.getElementById('mainChart').getContext('2d');
+			const analisisType = '<?php echo $selected_analisis; ?>';
 
-		let chartConfig = {};
+			let chartConfig = {};
 
-		<?php if ($selected_analisis == 'tren_bulanan'): ?>
-			// Tren Bulanan Chart
-			chartConfig = {
-				type: 'line',
-				data: {
-					labels: [
-						<?php
-						if (!empty($chart_data)) {
-							foreach ($chart_data as $row) {
-								echo "'" . (isset($row->nama_bulan) ? $row->nama_bulan : 'Bulan ' . $row->bulan) . "',";
+			<?php if ($selected_analisis == 'tren_bulanan'): ?>
+				// Tren Bulanan Chart
+				chartConfig = {
+					type: 'line',
+					data: {
+						labels: [
+							<?php
+							if (!empty($chart_data)) {
+								foreach ($chart_data as $row) {
+									echo "'" . (isset($row->nama_bulan) ? $row->nama_bulan : 'Bulan ' . $row->bulan) . "',";
+								}
 							}
-						}
-						?>
-					],
-					datasets: [{
-						label: 'Total Gugatan',
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->total_gugatan . ',';
-									}
-								} ?>],
-						borderColor: '#007bff',
-						backgroundColor: 'rgba(0, 123, 255, 0.1)',
-						tension: 0.4,
-						fill: true
-					}, {
-						label: 'Dikabulkan',
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->dikabulkan . ',';
-									}
-								} ?>],
-						borderColor: '#28a745',
-						backgroundColor: 'rgba(40, 167, 69, 0.1)',
-						tension: 0.4
-					}, {
-						label: 'Ditolak',
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->ditolak . ',';
-									}
-								} ?>],
-						borderColor: '#dc3545',
-						backgroundColor: 'rgba(220, 53, 69, 0.1)',
-						tension: 0.4
-					}]
-				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					scales: {
-						y: {
-							beginAtZero: true
-						}
+							?>
+						],
+						datasets: [{
+							label: 'Total Gugatan',
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->total_gugatan . ',';
+										}
+									} ?>],
+							borderColor: '#007bff',
+							backgroundColor: 'rgba(0, 123, 255, 0.1)',
+							tension: 0.4,
+							fill: true
+						}, {
+							label: 'Dikabulkan',
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->dikabulkan . ',';
+										}
+									} ?>],
+							borderColor: '#28a745',
+							backgroundColor: 'rgba(40, 167, 69, 0.1)',
+							tension: 0.4
+						}, {
+							label: 'Ditolak',
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->ditolak . ',';
+										}
+									} ?>],
+							borderColor: '#dc3545',
+							backgroundColor: 'rgba(220, 53, 69, 0.1)',
+							tension: 0.4
+						}]
 					},
-					plugins: {
-						legend: {
-							position: 'top'
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						scales: {
+							y: {
+								beginAtZero: true
+							}
 						},
-						tooltip: {
-							mode: 'index',
-							intersect: false
-						}
-					}
-				}
-			};
-
-		<?php elseif ($selected_analisis == 'tingkat_keberhasilan'): ?>
-			// Tingkat Keberhasilan Chart
-			chartConfig = {
-				type: 'doughnut',
-				data: {
-					labels: [
-						<?php
-						if (!empty($chart_data)) {
-							foreach ($chart_data as $row) {
-								echo "'" . $row->status_putusan . "',";
+						plugins: {
+							legend: {
+								position: 'top'
+							},
+							tooltip: {
+								mode: 'index',
+								intersect: false
 							}
 						}
-						?>
-					],
-					datasets: [{
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->jumlah . ',';
-									}
-								} ?>],
-						backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#6c757d'],
-						borderWidth: 2
-					}]
-				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					plugins: {
-						legend: {
-							position: 'bottom'
-						}
 					}
-				}
-			};
+				};
 
-		<?php elseif ($selected_analisis == 'perbandingan_wilayah'): ?>
-			// Perbandingan Wilayah Chart
-			chartConfig = {
-				type: 'bar',
-				data: {
-					labels: [
-						<?php
-						if (!empty($chart_data)) {
-							foreach ($chart_data as $row) {
-								echo "'" . $row->wilayah . "',";
+			<?php elseif ($selected_analisis == 'tingkat_keberhasilan'): ?>
+				// Tingkat Keberhasilan Chart
+				chartConfig = {
+					type: 'doughnut',
+					data: {
+						labels: [
+							<?php
+							if (!empty($chart_data)) {
+								foreach ($chart_data as $row) {
+									echo "'" . $row->status_putusan . "',";
+								}
+							}
+							?>
+						],
+						datasets: [{
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->jumlah . ',';
+										}
+									} ?>],
+							backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#6c757d'],
+							borderWidth: 2
+						}]
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						plugins: {
+							legend: {
+								position: 'bottom'
 							}
 						}
-						?>
-					],
-					datasets: [{
-						label: 'Total Gugatan',
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->total_gugatan . ',';
+					}
+				};
+
+			<?php elseif ($selected_analisis == 'perbandingan_wilayah'): ?>
+				// Perbandingan Wilayah Chart
+				chartConfig = {
+					type: 'bar',
+					data: {
+						labels: [
+							<?php
+							if (!empty($chart_data)) {
+								foreach ($chart_data as $row) {
+									echo "'" . $row->wilayah . "',";
+								}
+							}
+							?>
+						],
+						datasets: [{
+							label: 'Total Gugatan',
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->total_gugatan . ',';
+										}
+									} ?>],
+							backgroundColor: '#007bff',
+							borderColor: '#0056b3',
+							borderWidth: 1
+						}, {
+							label: 'Dikabulkan',
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->dikabulkan . ',';
+										}
+									} ?>],
+							backgroundColor: '#28a745',
+							borderColor: '#1e7e34',
+							borderWidth: 1
+						}, {
+							label: 'Ditolak',
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->ditolak . ',';
+										}
+									} ?>],
+							backgroundColor: '#dc3545',
+							borderColor: '#c82333',
+							borderWidth: 1
+						}]
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						},
+						plugins: {
+							legend: {
+								position: 'top'
+							}
+						}
+					}
+				};
+
+			<?php elseif ($selected_analisis == 'demografis_penggugat'): ?>
+				// Demografis Penggugat Chart Data
+				const genderData = {};
+				const ageData = {};
+				const professionData = {};
+
+				<?php if (!empty($chart_data)): ?>
+					<?php foreach ($chart_data as $row): ?>
+						// Group by gender
+						if (!genderData['<?php echo $row->jenis_kelamin; ?>']) {
+							genderData['<?php echo $row->jenis_kelamin; ?>'] = 0;
+						}
+						genderData['<?php echo $row->jenis_kelamin; ?>'] += <?php echo $row->jumlah; ?>;
+
+						// Group by age
+						if (!ageData['<?php echo $row->usia_kategori; ?>']) {
+							ageData['<?php echo $row->usia_kategori; ?>'] = 0;
+						}
+						ageData['<?php echo $row->usia_kategori; ?>'] += <?php echo $row->jumlah; ?>;
+
+						// Group by profession
+						if (!professionData['<?php echo addslashes($row->pekerjaan); ?>']) {
+							professionData['<?php echo addslashes($row->pekerjaan); ?>'] = 0;
+						}
+						professionData['<?php echo addslashes($row->pekerjaan); ?>'] += <?php echo $row->jumlah; ?>;
+					<?php endforeach; ?>
+				<?php endif; ?>
+
+				// Convert objects to arrays
+				const genderLabels = Object.keys(genderData);
+				const genderValues = Object.values(genderData);
+
+				const ageLabels = Object.keys(ageData);
+				const ageValues = Object.values(ageData);
+
+				// Sort professions by value and take top 10
+				const professionEntries = Object.entries(professionData);
+				professionEntries.sort((a, b) => b[1] - a[1]);
+				const topProfessions = professionEntries.slice(0, 10);
+				const professionLabels = topProfessions.map(entry => entry[0]);
+				const professionValues = topProfessions.map(entry => entry[1]);
+
+				// Chart configurations for each type
+				const chartConfigs = {
+					age: {
+						type: 'doughnut',
+						data: {
+							labels: ageLabels,
+							datasets: [{
+								label: 'Distribusi Usia',
+								data: ageValues,
+								backgroundColor: [
+									'#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+								],
+								borderWidth: 2,
+								borderColor: '#fff'
+							}]
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
+							plugins: {
+								legend: {
+									position: 'bottom',
+									labels: {
+										padding: 20,
+										font: {
+											size: 12
+										}
 									}
-								} ?>],
-						backgroundColor: '#007bff',
-						borderColor: '#0056b3',
-						borderWidth: 1
-					}, {
-						label: 'Dikabulkan',
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->dikabulkan . ',';
+								},
+								tooltip: {
+									callbacks: {
+										label: function(context) {
+											const total = context.dataset.data.reduce((a, b) => a + b, 0);
+											const percentage = ((context.parsed / total) * 100).toFixed(1);
+											return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+										}
 									}
-								} ?>],
-						backgroundColor: '#28a745',
-						borderColor: '#1e7e34',
-						borderWidth: 1
-					}, {
-						label: 'Ditolak',
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->ditolak . ',';
-									}
-								} ?>],
-						backgroundColor: '#dc3545',
-						borderColor: '#c82333',
-						borderWidth: 1
-					}]
-				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					scales: {
-						y: {
-							beginAtZero: true
+								}
+							}
 						}
 					},
-					plugins: {
-						legend: {
-							position: 'top'
+					gender: {
+						type: 'doughnut',
+						data: {
+							labels: genderLabels,
+							datasets: [{
+								label: 'Distribusi Jenis Kelamin',
+								data: genderValues,
+								backgroundColor: ['#FF69B4', '#87CEEB'],
+								borderWidth: 2,
+								borderColor: '#fff'
+							}]
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
+							plugins: {
+								legend: {
+									position: 'bottom',
+									labels: {
+										padding: 20,
+										font: {
+											size: 12
+										}
+									}
+								},
+								tooltip: {
+									callbacks: {
+										label: function(context) {
+											const total = context.dataset.data.reduce((a, b) => a + b, 0);
+											const percentage = ((context.parsed / total) * 100).toFixed(1);
+											return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+										}
+									}
+								}
+							}
+						}
+					},
+					profession: {
+						type: 'bar',
+						data: {
+							labels: professionLabels,
+							datasets: [{
+								label: 'Jumlah Berdasarkan Pekerjaan',
+								data: professionValues,
+								backgroundColor: '#4BC0C0',
+								borderColor: '#36A2EB',
+								borderWidth: 1
+							}]
+						},
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
+							scales: {
+								y: {
+									beginAtZero: true,
+									ticks: {
+										stepSize: 1
+									}
+								}
+							},
+							plugins: {
+								legend: {
+									position: 'top'
+								},
+								tooltip: {
+									callbacks: {
+										label: function(context) {
+											return context.dataset.label + ': ' + context.parsed.y + ' orang';
+										}
+									}
+								}
+							}
 						}
 					}
+				};
+
+				// Default to age chart
+				chartConfig = chartConfigs.age;
+
+				// Show chart controls
+				document.getElementById('chartControls').style.display = 'block';
+
+				// Chart type switching functionality
+				let currentChart = null;
+
+				function switchChart(type) {
+					if (currentChart) {
+						currentChart.destroy();
+					}
+
+					const ctx = document.getElementById('mainChart').getContext('2d');
+					currentChart = new Chart(ctx, chartConfigs[type]);
+
+					// Update active button
+					document.querySelectorAll('[data-chart-type]').forEach(btn => {
+						btn.classList.remove('active');
+					});
+					document.querySelector(`[data-chart-type="${type}"]`).classList.add('active');
 				}
-			};
 
-		<?php elseif ($selected_analisis == 'demografis_penggugat'): ?>
-			// Demografis Penggugat Chart
-			const genderData = {};
-			const ageData = {};
-			const professionData = {};
+				// Make switchChart globally accessible
+				window.switchChart = switchChart;
 
-			<?php if (!empty($chart_data)): ?>
-				<?php foreach ($chart_data as $row): ?>
-					// Group by gender
-					if (!genderData['<?php echo $row->jenis_kelamin; ?>']) {
-						genderData['<?php echo $row->jenis_kelamin; ?>'] = 0;
+			<?php elseif ($selected_analisis == 'waktu_penyelesaian'): ?>
+				// Waktu Penyelesaian Chart
+				chartConfig = {
+					type: 'bar',
+					data: {
+						labels: [
+							<?php
+							if (!empty($chart_data)) {
+								foreach ($chart_data as $row) {
+									echo "'" . $row->kategori_waktu . "',";
+								}
+							}
+							?>
+						],
+						datasets: [{
+							label: 'Jumlah Perkara',
+							data: [<?php if (!empty($chart_data)) {
+										foreach ($chart_data as $row) {
+											echo $row->jumlah . ',';
+										}
+									} ?>],
+							backgroundColor: [
+								'#28a745', // <= 1 Bulan
+								'#ffc107', // 1-2 Bulan  
+								'#fd7e14', // 2-3 Bulan
+								'#dc3545', // 3-4 Bulan
+								'#6f42c1' // > 4 Bulan
+							],
+							borderColor: '#ffffff',
+							borderWidth: 1
+						}]
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						scales: {
+							y: {
+								beginAtZero: true,
+								title: {
+									display: true,
+									text: 'Jumlah Perkara'
+								}
+							},
+							x: {
+								title: {
+									display: true,
+									text: 'Kategori Waktu Penyelesaian'
+								}
+							}
+						},
+						plugins: {
+							legend: {
+								display: false
+							},
+							tooltip: {
+								callbacks: {
+									afterLabel: function(context) {
+										const rowIndex = context.dataIndex;
+										<?php if (!empty($chart_data)): ?>
+											const percentages = [
+												<?php foreach ($chart_data as $row) {
+													echo $row->persentase . ',';
+												} ?>
+											];
+											const avgDays = [
+												<?php foreach ($chart_data as $row) {
+													echo $row->rata_hari . ',';
+												} ?>
+											];
+											return [
+												'Persentase: ' + percentages[rowIndex] + '%',
+												'Rata-rata: ' + avgDays[rowIndex] + ' hari'
+											];
+										<?php endif; ?>
+									}
+								}
+							}
+						}
 					}
-					genderData['<?php echo $row->jenis_kelamin; ?>'] += <?php echo $row->jumlah; ?>;
-
-					// Group by age
-					if (!ageData['<?php echo $row->usia_kategori; ?>']) {
-						ageData['<?php echo $row->usia_kategori; ?>'] = 0;
+				};
+			<?php else: ?>
+				// Default Chart
+				chartConfig = {
+					type: 'bar',
+					data: {
+						labels: ['Data'],
+						datasets: [{
+							label: 'No Data',
+							data: [0],
+							backgroundColor: '#6c757d'
+						}]
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false
 					}
-					ageData['<?php echo $row->usia_kategori; ?>'] += <?php echo $row->jumlah; ?>;
-
-					// Group by profession (top 10)
-					if (!professionData['<?php echo addslashes($row->pekerjaan); ?>']) {
-						professionData['<?php echo addslashes($row->pekerjaan); ?>'] = 0;
-					}
-					professionData['<?php echo addslashes($row->pekerjaan); ?>'] += <?php echo $row->jumlah; ?>;
-				<?php endforeach; ?>
+				};
 			<?php endif; ?>
 
-			// Convert objects to arrays and sort
-			const genderLabels = Object.keys(genderData);
-			const genderValues = Object.values(genderData);
-
-			const ageLabels = Object.keys(ageData);
-			const ageValues = Object.values(ageData);
-
-			// Sort professions by value and take top 10
-			const professionEntries = Object.entries(professionData);
-			professionEntries.sort((a, b) => b[1] - a[1]);
-			const topProfessions = professionEntries.slice(0, 10);
-			const professionLabels = topProfessions.map(entry => entry[0]);
-			const professionValues = topProfessions.map(entry => entry[1]);
-
-			chartConfig = {
-				type: 'doughnut',
-				data: {
-					labels: ageLabels,
-					datasets: [{
-						label: 'Distribusi Usia',
-						data: ageValues,
-						backgroundColor: [
-							'#FF6384', // < 25 tahun
-							'#36A2EB', // 25-35 tahun
-							'#FFCE56', // 36-45 tahun
-							'#4BC0C0', // 46-55 tahun
-							'#9966FF' // > 55 tahun
-						],
-						borderWidth: 2,
-						borderColor: '#fff'
-					}]
-				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					plugins: {
-						legend: {
-							position: 'bottom',
-							labels: {
-								padding: 20,
-								font: {
-									size: 12
-								}
-							}
-						},
-						tooltip: {
-							callbacks: {
-								label: function(context) {
-									const total = context.dataset.data.reduce((a, b) => a + b, 0);
-									const percentage = ((context.parsed / total) * 100).toFixed(1);
-									return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
-								}
-							}
-						}
-					}
-				}
-			};
-
-		<?php elseif ($selected_analisis == 'waktu_penyelesaian'): ?>
-			// Waktu Penyelesaian Chart
-			chartConfig = {
-				type: 'bar',
-				data: {
-					labels: [
-						<?php
-						if (!empty($chart_data)) {
-							foreach ($chart_data as $row) {
-								echo "'" . $row->kategori_waktu . "',";
-							}
-						}
-						?>
-					],
-					datasets: [{
-						label: 'Jumlah Perkara',
-						data: [<?php if (!empty($chart_data)) {
-									foreach ($chart_data as $row) {
-										echo $row->jumlah . ',';
-									}
-								} ?>],
-						backgroundColor: [
-							'#28a745', // <= 1 Bulan
-							'#ffc107', // 1-2 Bulan  
-							'#fd7e14', // 2-3 Bulan
-							'#dc3545', // 3-4 Bulan
-							'#6f42c1' // > 4 Bulan
-						],
-						borderColor: '#ffffff',
-						borderWidth: 1
-					}]
-				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					scales: {
-						y: {
-							beginAtZero: true,
-							title: {
-								display: true,
-								text: 'Jumlah Perkara'
-							}
-						},
-						x: {
-							title: {
-								display: true,
-								text: 'Kategori Waktu Penyelesaian'
-							}
-						}
-					},
-					plugins: {
-						legend: {
-							display: false
-						},
-						tooltip: {
-							callbacks: {
-								afterLabel: function(context) {
-									const rowIndex = context.dataIndex;
-									<?php if (!empty($chart_data)): ?>
-										const percentages = [
-											<?php foreach ($chart_data as $row) {
-												echo $row->persentase . ',';
-											} ?>
-										];
-										const avgDays = [
-											<?php foreach ($chart_data as $row) {
-												echo $row->rata_hari . ',';
-											} ?>
-										];
-										return [
-											'Persentase: ' + percentages[rowIndex] + '%',
-											'Rata-rata: ' + avgDays[rowIndex] + ' hari'
-										];
-									<?php endif; ?>
-								}
-							}
-						}
-					}
-				}
-			};
-		<?php else: ?>
-			// Default Chart
-			chartConfig = {
-				type: 'bar',
-				data: {
-					labels: ['Data'],
-					datasets: [{
-						label: 'No Data',
-						data: [0],
-						backgroundColor: '#6c757d'
-					}]
-				},
-				options: {
-					responsive: true,
-					maintainAspectRatio: false
-				}
-			};
-		<?php endif; ?>
-
-		new Chart(ctx, chartConfig);
+			// Initialize chart
+			<?php if ($selected_analisis == 'demografis_penggugat'): ?>
+				// For demografis, use switchChart function with default age chart
+				switchChart('age');
+				
+				// Add event listeners for chart type buttons
+				document.querySelectorAll('[data-chart-type]').forEach(button => {
+					button.addEventListener('click', function() {
+						const type = this.getAttribute('data-chart-type');
+						switchChart(type);
+					});
+				});
+			<?php else: ?>
+				// For other charts, use standard initialization
+				new Chart(ctx, chartConfig);
+			<?php endif; ?>
+		} catch (e) {
+			console.log('Chart rendering failed:', e);
+		}
 	}
 
 	// Export Excel function
@@ -749,6 +889,20 @@
 		height: 400px;
 		width: 100%;
 		margin-bottom: 20px;
+	}
+
+	.chart-controls {
+		text-align: center;
+		margin-bottom: 15px;
+	}
+
+	.chart-controls .btn-group .btn {
+		margin: 0 2px;
+		min-width: 120px;
+	}
+
+	.chart-controls .btn.active {
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	}
 
 	#mainChart {
