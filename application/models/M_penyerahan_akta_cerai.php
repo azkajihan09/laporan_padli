@@ -4,8 +4,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class M_penyerahan_akta_cerai extends CI_Model
 {
 
-	public function get_penyerahan_akta_cerai($lap_tahun, $lap_bulan)
+	public function get_penyerahan_akta_cerai($lap_tahun, $lap_bulan, $wilayah = 'Semua')
 	{
+		$where_wilayah = '';
+		if ($wilayah !== 'Semua') {
+			if ($wilayah === 'HSU') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Hulu Sungai Utara%' OR pp1.alamat LIKE '%HSU%' 
+								   OR pp1.alamat LIKE '%Amuntai%' OR pp1.alamat LIKE '%Haur Gading%' 
+								   OR pp1.alamat LIKE '%Banjang%' OR pp1.alamat LIKE '%Paminggir%' 
+								   OR pp1.alamat LIKE '%Babirik%' OR pp1.alamat LIKE '%Sungai Pandan%' 
+								   OR pp1.alamat LIKE '%Danau Panggang%' OR pp1.alamat LIKE '%Sungai Tabukan%')";
+			} else if ($wilayah === 'Balangan') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Balangan%' OR pp1.alamat LIKE '%Paringin%' 
+								   OR pp1.alamat LIKE '%Awayan%' OR pp1.alamat LIKE '%Tebing Tinggi%' 
+								   OR pp1.alamat LIKE '%Juai%' OR pp1.alamat LIKE '%Lampihong%' 
+								   OR pp1.alamat LIKE '%Halong%' OR pp1.alamat LIKE '%Batumandi%')";
+			}
+		}
+
 		$sql = "SELECT 
 				p.nomor_perkara,
 				p.jenis_perkara_nama,
@@ -29,17 +45,33 @@ class M_penyerahan_akta_cerai extends CI_Model
 			WHERE (
 				(YEAR(pac.tgl_penyerahan_akta_cerai) = ? AND MONTH(pac.tgl_penyerahan_akta_cerai) = ?) OR
 				(YEAR(pac.tgl_penyerahan_akta_cerai_pihak2) = ? AND MONTH(pac.tgl_penyerahan_akta_cerai_pihak2) = ?)
-			) AND pac.nomor_akta_cerai IS NOT NULL
+			) AND pac.nomor_akta_cerai IS NOT NULL $where_wilayah
 			ORDER BY 
 				COALESCE(pac.tgl_penyerahan_akta_cerai, pac.tgl_penyerahan_akta_cerai_pihak2) DESC,
 				p.nomor_perkara";
-			
+
 		$query = $this->db->query($sql, array($lap_tahun, $lap_bulan, $lap_tahun, $lap_bulan));
 		return $query->result();
 	}
-	
-	public function get_penyerahan_akta_cerai_tahunan($lap_tahun)
+
+	public function get_penyerahan_akta_cerai_tahunan($lap_tahun, $wilayah = 'Semua')
 	{
+		$where_wilayah = '';
+		if ($wilayah !== 'Semua') {
+			if ($wilayah === 'HSU') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Hulu Sungai Utara%' OR pp1.alamat LIKE '%HSU%' 
+								   OR pp1.alamat LIKE '%Amuntai%' OR pp1.alamat LIKE '%Haur Gading%' 
+								   OR pp1.alamat LIKE '%Banjang%' OR pp1.alamat LIKE '%Paminggir%' 
+								   OR pp1.alamat LIKE '%Babirik%' OR pp1.alamat LIKE '%Sungai Pandan%' 
+								   OR pp1.alamat LIKE '%Danau Panggang%' OR pp1.alamat LIKE '%Sungai Tabukan%')";
+			} else if ($wilayah === 'Balangan') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Balangan%' OR pp1.alamat LIKE '%Paringin%' 
+								   OR pp1.alamat LIKE '%Awayan%' OR pp1.alamat LIKE '%Tebing Tinggi%' 
+								   OR pp1.alamat LIKE '%Juai%' OR pp1.alamat LIKE '%Lampihong%' 
+								   OR pp1.alamat LIKE '%Halong%' OR pp1.alamat LIKE '%Batumandi%')";
+			}
+		}
+
 		$sql = "SELECT 
 				p.nomor_perkara,
 				p.jenis_perkara_nama,
@@ -63,17 +95,33 @@ class M_penyerahan_akta_cerai extends CI_Model
 			WHERE (
 				(YEAR(pac.tgl_penyerahan_akta_cerai) = ?) OR
 				(YEAR(pac.tgl_penyerahan_akta_cerai_pihak2) = ?)
-			) AND pac.nomor_akta_cerai IS NOT NULL
+			) AND pac.nomor_akta_cerai IS NOT NULL $where_wilayah
 			ORDER BY 
 				COALESCE(pac.tgl_penyerahan_akta_cerai, pac.tgl_penyerahan_akta_cerai_pihak2) DESC,
 				p.nomor_perkara";
-			
+
 		$query = $this->db->query($sql, array($lap_tahun, $lap_tahun));
 		return $query->result();
 	}
-	
-	public function get_penyerahan_akta_cerai_custom($tanggal_mulai, $tanggal_akhir)
+
+	public function get_penyerahan_akta_cerai_custom($tanggal_mulai, $tanggal_akhir, $wilayah = 'Semua')
 	{
+		$where_wilayah = '';
+		if ($wilayah !== 'Semua') {
+			if ($wilayah === 'HSU') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Hulu Sungai Utara%' OR pp1.alamat LIKE '%HSU%' 
+								   OR pp1.alamat LIKE '%Amuntai%' OR pp1.alamat LIKE '%Haur Gading%' 
+								   OR pp1.alamat LIKE '%Banjang%' OR pp1.alamat LIKE '%Paminggir%' 
+								   OR pp1.alamat LIKE '%Babirik%' OR pp1.alamat LIKE '%Sungai Pandan%' 
+								   OR pp1.alamat LIKE '%Danau Panggang%' OR pp1.alamat LIKE '%Sungai Tabukan%')";
+			} else if ($wilayah === 'Balangan') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Balangan%' OR pp1.alamat LIKE '%Paringin%' 
+								   OR pp1.alamat LIKE '%Awayan%' OR pp1.alamat LIKE '%Tebing Tinggi%' 
+								   OR pp1.alamat LIKE '%Juai%' OR pp1.alamat LIKE '%Lampihong%' 
+								   OR pp1.alamat LIKE '%Halong%' OR pp1.alamat LIKE '%Batumandi%')";
+			}
+		}
+
 		$sql = "SELECT 
 				p.nomor_perkara,
 				p.jenis_perkara_nama,
@@ -97,17 +145,33 @@ class M_penyerahan_akta_cerai extends CI_Model
 			WHERE (
 				(pac.tgl_penyerahan_akta_cerai BETWEEN ? AND ?) OR
 				(pac.tgl_penyerahan_akta_cerai_pihak2 BETWEEN ? AND ?)
-			) AND pac.nomor_akta_cerai IS NOT NULL
+			) AND pac.nomor_akta_cerai IS NOT NULL $where_wilayah
 			ORDER BY 
 				COALESCE(pac.tgl_penyerahan_akta_cerai, pac.tgl_penyerahan_akta_cerai_pihak2) DESC,
 				p.nomor_perkara";
-			
+
 		$query = $this->db->query($sql, array($tanggal_mulai, $tanggal_akhir, $tanggal_mulai, $tanggal_akhir));
 		return $query->result();
 	}
-	
-	public function get_summary_penyerahan($lap_tahun, $lap_bulan)
+
+	public function get_summary_penyerahan($lap_tahun, $lap_bulan, $wilayah = 'Semua')
 	{
+		$where_wilayah = '';
+		if ($wilayah !== 'Semua') {
+			if ($wilayah === 'HSU') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Hulu Sungai Utara%' OR pp1.alamat LIKE '%HSU%' 
+								   OR pp1.alamat LIKE '%Amuntai%' OR pp1.alamat LIKE '%Haur Gading%' 
+								   OR pp1.alamat LIKE '%Banjang%' OR pp1.alamat LIKE '%Paminggir%' 
+								   OR pp1.alamat LIKE '%Babirik%' OR pp1.alamat LIKE '%Sungai Pandan%' 
+								   OR pp1.alamat LIKE '%Danau Panggang%' OR pp1.alamat LIKE '%Sungai Tabukan%')";
+			} else if ($wilayah === 'Balangan') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Balangan%' OR pp1.alamat LIKE '%Paringin%' 
+								   OR pp1.alamat LIKE '%Awayan%' OR pp1.alamat LIKE '%Tebing Tinggi%' 
+								   OR pp1.alamat LIKE '%Juai%' OR pp1.alamat LIKE '%Lampihong%' 
+								   OR pp1.alamat LIKE '%Halong%' OR pp1.alamat LIKE '%Batumandi%')";
+			}
+		}
+
 		$sql = "SELECT 
 				COUNT(*) as total_akta,
 				SUM(CASE WHEN pac.tgl_penyerahan_akta_cerai IS NOT NULL THEN 1 ELSE 0 END) as diserahkan_pihak1,
@@ -117,17 +181,34 @@ class M_penyerahan_akta_cerai extends CI_Model
 				SUM(CASE WHEN pac.tgl_penyerahan_akta_cerai IS NOT NULL AND pac.tgl_penyerahan_akta_cerai_pihak2 IS NOT NULL THEN 1 ELSE 0 END) as kedua_pihak_selesai
 			FROM perkara_akta_cerai pac
 			INNER JOIN perkara p ON pac.perkara_id = p.perkara_id
+			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
 			WHERE (
 				(YEAR(pac.tgl_penyerahan_akta_cerai) = ? AND MONTH(pac.tgl_penyerahan_akta_cerai) = ?) OR
 				(YEAR(pac.tgl_penyerahan_akta_cerai_pihak2) = ? AND MONTH(pac.tgl_penyerahan_akta_cerai_pihak2) = ?)
-			) AND pac.nomor_akta_cerai IS NOT NULL";
-			
+			) AND pac.nomor_akta_cerai IS NOT NULL $where_wilayah";
+
 		$query = $this->db->query($sql, array($lap_tahun, $lap_bulan, $lap_tahun, $lap_bulan));
 		return $query->row();
 	}
-	
-	public function get_summary_penyerahan_tahunan($lap_tahun)
+
+	public function get_summary_penyerahan_tahunan($lap_tahun, $wilayah = 'Semua')
 	{
+		$where_wilayah = '';
+		if ($wilayah !== 'Semua') {
+			if ($wilayah === 'HSU') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Hulu Sungai Utara%' OR pp1.alamat LIKE '%HSU%' 
+								   OR pp1.alamat LIKE '%Amuntai%' OR pp1.alamat LIKE '%Haur Gading%' 
+								   OR pp1.alamat LIKE '%Banjang%' OR pp1.alamat LIKE '%Paminggir%' 
+								   OR pp1.alamat LIKE '%Babirik%' OR pp1.alamat LIKE '%Sungai Pandan%' 
+								   OR pp1.alamat LIKE '%Danau Panggang%' OR pp1.alamat LIKE '%Sungai Tabukan%')";
+			} else if ($wilayah === 'Balangan') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Balangan%' OR pp1.alamat LIKE '%Paringin%' 
+								   OR pp1.alamat LIKE '%Awayan%' OR pp1.alamat LIKE '%Tebing Tinggi%' 
+								   OR pp1.alamat LIKE '%Juai%' OR pp1.alamat LIKE '%Lampihong%' 
+								   OR pp1.alamat LIKE '%Halong%' OR pp1.alamat LIKE '%Batumandi%')";
+			}
+		}
+
 		$sql = "SELECT 
 				COUNT(*) as total_akta,
 				SUM(CASE WHEN pac.tgl_penyerahan_akta_cerai IS NOT NULL THEN 1 ELSE 0 END) as diserahkan_pihak1,
@@ -137,17 +218,34 @@ class M_penyerahan_akta_cerai extends CI_Model
 				SUM(CASE WHEN pac.tgl_penyerahan_akta_cerai IS NOT NULL AND pac.tgl_penyerahan_akta_cerai_pihak2 IS NOT NULL THEN 1 ELSE 0 END) as kedua_pihak_selesai
 			FROM perkara_akta_cerai pac
 			INNER JOIN perkara p ON pac.perkara_id = p.perkara_id
+			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
 			WHERE (
 				(YEAR(pac.tgl_penyerahan_akta_cerai) = ?) OR
 				(YEAR(pac.tgl_penyerahan_akta_cerai_pihak2) = ?)
-			) AND pac.nomor_akta_cerai IS NOT NULL";
-			
+			) AND pac.nomor_akta_cerai IS NOT NULL $where_wilayah";
+
 		$query = $this->db->query($sql, array($lap_tahun, $lap_tahun));
 		return $query->row();
 	}
-	
-	public function get_summary_penyerahan_custom($tanggal_mulai, $tanggal_akhir)
+
+	public function get_summary_penyerahan_custom($tanggal_mulai, $tanggal_akhir, $wilayah = 'Semua')
 	{
+		$where_wilayah = '';
+		if ($wilayah !== 'Semua') {
+			if ($wilayah === 'HSU') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Hulu Sungai Utara%' OR pp1.alamat LIKE '%HSU%' 
+								   OR pp1.alamat LIKE '%Amuntai%' OR pp1.alamat LIKE '%Haur Gading%' 
+								   OR pp1.alamat LIKE '%Banjang%' OR pp1.alamat LIKE '%Paminggir%' 
+								   OR pp1.alamat LIKE '%Babirik%' OR pp1.alamat LIKE '%Sungai Pandan%' 
+								   OR pp1.alamat LIKE '%Danau Panggang%' OR pp1.alamat LIKE '%Sungai Tabukan%')";
+			} else if ($wilayah === 'Balangan') {
+				$where_wilayah = " AND (pp1.alamat LIKE '%Balangan%' OR pp1.alamat LIKE '%Paringin%' 
+								   OR pp1.alamat LIKE '%Awayan%' OR pp1.alamat LIKE '%Tebing Tinggi%' 
+								   OR pp1.alamat LIKE '%Juai%' OR pp1.alamat LIKE '%Lampihong%' 
+								   OR pp1.alamat LIKE '%Halong%' OR pp1.alamat LIKE '%Batumandi%')";
+			}
+		}
+
 		$sql = "SELECT 
 				COUNT(*) as total_akta,
 				SUM(CASE WHEN pac.tgl_penyerahan_akta_cerai IS NOT NULL THEN 1 ELSE 0 END) as diserahkan_pihak1,
@@ -157,11 +255,12 @@ class M_penyerahan_akta_cerai extends CI_Model
 				SUM(CASE WHEN pac.tgl_penyerahan_akta_cerai IS NOT NULL AND pac.tgl_penyerahan_akta_cerai_pihak2 IS NOT NULL THEN 1 ELSE 0 END) as kedua_pihak_selesai
 			FROM perkara_akta_cerai pac
 			INNER JOIN perkara p ON pac.perkara_id = p.perkara_id
+			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
 			WHERE (
 				(pac.tgl_penyerahan_akta_cerai BETWEEN ? AND ?) OR
 				(pac.tgl_penyerahan_akta_cerai_pihak2 BETWEEN ? AND ?)
-			) AND pac.nomor_akta_cerai IS NOT NULL";
-			
+			) AND pac.nomor_akta_cerai IS NOT NULL $where_wilayah";
+
 		$query = $this->db->query($sql, array($tanggal_mulai, $tanggal_akhir, $tanggal_mulai, $tanggal_akhir));
 		return $query->row();
 	}
