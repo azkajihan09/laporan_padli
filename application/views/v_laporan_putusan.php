@@ -138,11 +138,20 @@
                                                     <label>Status Putusan:</label>
                                                     <select name="status_putusan" class="form-control">
                                                         <option value="semua" <?php echo (isset($selected_status) && $selected_status === 'semua') ? 'selected' : ''; ?>>Semua Status</option>
-                                                        <option value="dikabulkan" <?php echo (isset($selected_status) && $selected_status === 'dikabulkan') ? 'selected' : ''; ?>>Dikabulkan</option>
-                                                        <option value="ditolak" <?php echo (isset($selected_status) && $selected_status === 'ditolak') ? 'selected' : ''; ?>>Ditolak</option>
-                                                        <option value="tidak_dapat_diterima" <?php echo (isset($selected_status) && $selected_status === 'tidak_dapat_diterima') ? 'selected' : ''; ?>>NO / Tidak Dapat Diterima</option>
-                                                        <option value="dicabut" <?php echo (isset($selected_status) && $selected_status === 'dicabut') ? 'selected' : ''; ?>>Dicabut</option>
-                                                        <option value="digugurkan" <?php echo (isset($selected_status) && $selected_status === 'digugurkan') ? 'selected' : ''; ?>>Digugurkan</option>
+                                                        <?php if (isset($status_putusan_list) && count($status_putusan_list) > 0): ?>
+                                                            <?php foreach ($status_putusan_list as $item): ?>
+                                                                <option value="<?php echo $item->id; ?>" <?php echo (isset($selected_status) && $selected_status == $item->id) ? 'selected' : ''; ?>>
+                                                                    <?php echo $item->status_putusan_nama; ?>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        <?php else: ?>
+                                                            <!-- Fallback options jika data tidak tersedia -->
+                                                            <option value="1" <?php echo (isset($selected_status) && $selected_status === '1') ? 'selected' : ''; ?>>Dikabulkan</option>
+                                                            <option value="2" <?php echo (isset($selected_status) && $selected_status === '2') ? 'selected' : ''; ?>>Ditolak</option>
+                                                            <option value="3" <?php echo (isset($selected_status) && $selected_status === '3') ? 'selected' : ''; ?>>NO / Tidak Dapat Diterima</option>
+                                                            <option value="7" <?php echo (isset($selected_status) && $selected_status === '7') ? 'selected' : ''; ?>>Dicabut</option>
+                                                            <option value="5" <?php echo (isset($selected_status) && $selected_status === '5') ? 'selected' : ''; ?>>Gugur</option>
+                                                        <?php endif; ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -273,16 +282,27 @@
                                                             <td>
                                                                 <?php
                                                                 $badge_class = 'secondary';
-                                                                if (stripos($row->status_putusan_nama, 'dikabulkan') !== false) {
-                                                                    $badge_class = 'success';
-                                                                } elseif (stripos($row->status_putusan_nama, 'ditolak') !== false) {
-                                                                    $badge_class = 'danger';
-                                                                } elseif (stripos($row->status_putusan_nama, 'tidak dapat diterima') !== false || stripos($row->status_putusan_nama, 'NO') !== false) {
-                                                                    $badge_class = 'warning';
-                                                                } elseif (stripos($row->status_putusan_nama, 'dicabut') !== false) {
-                                                                    $badge_class = 'info';
-                                                                } elseif (stripos($row->status_putusan_nama, 'gugur') !== false) {
-                                                                    $badge_class = 'dark';
+                                                                switch ($row->status_putusan_id) {
+                                                                    case 1: // Dikabulkan
+                                                                        $badge_class = 'success';
+                                                                        break;
+                                                                    case 2: // Ditolak
+                                                                        $badge_class = 'danger';
+                                                                        break;
+                                                                    case 3:
+                                                                    case 4: // Tidak dapat diterima / NO
+                                                                        $badge_class = 'warning';
+                                                                        break;
+                                                                    case 7: // Dicabut
+                                                                        $badge_class = 'info';
+                                                                        break;
+                                                                    case 5:
+                                                                    case 6: // Gugur/Digugurkan
+                                                                        $badge_class = 'dark';
+                                                                        break;
+                                                                    default:
+                                                                        $badge_class = 'secondary';
+                                                                        break;
                                                                 }
                                                                 ?>
                                                                 <span class="badge badge-<?php echo $badge_class; ?>">

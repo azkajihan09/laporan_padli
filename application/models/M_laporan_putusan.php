@@ -17,6 +17,7 @@ class M_laporan_putusan extends CI_Model
 				p.pihak1_text AS pihak1,
 				p.pihak2_text AS pihak2,
 				DATE_FORMAT(pp.tanggal_putusan, '%d-%m-%Y') AS tanggal_putusan,
+				pp.status_putusan_id,
 				pp.status_putusan_nama,
 				LEFT(pp.amar_putusan, 400) AS ringkasan_amar,
 				DATEDIFF(CURDATE(), pp.tanggal_putusan) AS hari_sejak_putusan
@@ -48,6 +49,7 @@ class M_laporan_putusan extends CI_Model
 				p.pihak1_text AS pihak1,
 				p.pihak2_text AS pihak2,
 				DATE_FORMAT(pp.tanggal_putusan, '%d-%m-%Y') AS tanggal_putusan,
+				pp.status_putusan_id,
 				pp.status_putusan_nama,
 				LEFT(pp.amar_putusan, 400) AS ringkasan_amar,
 				DATEDIFF(CURDATE(), pp.tanggal_putusan) AS hari_sejak_putusan
@@ -78,6 +80,7 @@ class M_laporan_putusan extends CI_Model
 				p.pihak1_text AS pihak1,
 				p.pihak2_text AS pihak2,
 				DATE_FORMAT(pp.tanggal_putusan, '%d-%m-%Y') AS tanggal_putusan,
+				pp.status_putusan_id,
 				pp.status_putusan_nama,
 				LEFT(pp.amar_putusan, 400) AS ringkasan_amar,
 				DATEDIFF(CURDATE(), pp.tanggal_putusan) AS hari_sejak_putusan
@@ -103,20 +106,11 @@ class M_laporan_putusan extends CI_Model
 
         $sql = "SELECT 
 				COUNT(*) as total_putusan,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Dikabulkan%' 
-					OR LOWER(pp.amar_putusan) LIKE '%dikabulkan%'
-					OR LOWER(pp.amar_putusan) LIKE '%mengabulkan%' THEN 1 ELSE 0 END) as dikabulkan,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Ditolak%'
-					OR LOWER(pp.amar_putusan) LIKE '%ditolak%'
-					OR LOWER(pp.amar_putusan) LIKE '%menolak%' THEN 1 ELSE 0 END) as ditolak,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Tidak Dapat Diterima%'
-					OR pp.status_putusan_nama LIKE '%Putusan NO%'
-					OR LOWER(pp.amar_putusan) LIKE '%tidak dapat diterima%' THEN 1 ELSE 0 END) as tidak_dapat_diterima,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Dicabut%'
-					OR LOWER(pp.amar_putusan) LIKE '%dicabut%' THEN 1 ELSE 0 END) as dicabut,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Gugur%'
-					OR pp.status_putusan_nama LIKE '%Digugurkan%'
-					OR LOWER(pp.amar_putusan) LIKE '%gugur%' THEN 1 ELSE 0 END) as digugurkan
+				SUM(CASE WHEN pp.status_putusan_id = 1 THEN 1 ELSE 0 END) as dikabulkan,
+				SUM(CASE WHEN pp.status_putusan_id = 2 THEN 1 ELSE 0 END) as ditolak,
+				SUM(CASE WHEN pp.status_putusan_id IN (3, 4) THEN 1 ELSE 0 END) as tidak_dapat_diterima,
+				SUM(CASE WHEN pp.status_putusan_id = 7 THEN 1 ELSE 0 END) as dicabut,
+				SUM(CASE WHEN pp.status_putusan_id IN (5, 6) THEN 1 ELSE 0 END) as digugurkan
 			FROM perkara p
 			JOIN perkara_putusan pp ON pp.perkara_id = p.perkara_id
 			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
@@ -138,20 +132,11 @@ class M_laporan_putusan extends CI_Model
 
         $sql = "SELECT 
 				COUNT(*) as total_putusan,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Dikabulkan%' 
-					OR LOWER(pp.amar_putusan) LIKE '%dikabulkan%'
-					OR LOWER(pp.amar_putusan) LIKE '%mengabulkan%' THEN 1 ELSE 0 END) as dikabulkan,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Ditolak%'
-					OR LOWER(pp.amar_putusan) LIKE '%ditolak%'
-					OR LOWER(pp.amar_putusan) LIKE '%menolak%' THEN 1 ELSE 0 END) as ditolak,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Tidak Dapat Diterima%'
-					OR pp.status_putusan_nama LIKE '%Putusan NO%'
-					OR LOWER(pp.amar_putusan) LIKE '%tidak dapat diterima%' THEN 1 ELSE 0 END) as tidak_dapat_diterima,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Dicabut%'
-					OR LOWER(pp.amar_putusan) LIKE '%dicabut%' THEN 1 ELSE 0 END) as dicabut,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Gugur%'
-					OR pp.status_putusan_nama LIKE '%Digugurkan%'
-					OR LOWER(pp.amar_putusan) LIKE '%gugur%' THEN 1 ELSE 0 END) as digugurkan
+				SUM(CASE WHEN pp.status_putusan_id = 1 THEN 1 ELSE 0 END) as dikabulkan,
+				SUM(CASE WHEN pp.status_putusan_id = 2 THEN 1 ELSE 0 END) as ditolak,
+				SUM(CASE WHEN pp.status_putusan_id IN (3, 4) THEN 1 ELSE 0 END) as tidak_dapat_diterima,
+				SUM(CASE WHEN pp.status_putusan_id = 7 THEN 1 ELSE 0 END) as dicabut,
+				SUM(CASE WHEN pp.status_putusan_id IN (5, 6) THEN 1 ELSE 0 END) as digugurkan
 			FROM perkara p
 			JOIN perkara_putusan pp ON pp.perkara_id = p.perkara_id
 			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
@@ -172,20 +157,11 @@ class M_laporan_putusan extends CI_Model
 
         $sql = "SELECT 
 				COUNT(*) as total_putusan,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Dikabulkan%' 
-					OR LOWER(pp.amar_putusan) LIKE '%dikabulkan%'
-					OR LOWER(pp.amar_putusan) LIKE '%mengabulkan%' THEN 1 ELSE 0 END) as dikabulkan,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Ditolak%'
-					OR LOWER(pp.amar_putusan) LIKE '%ditolak%'
-					OR LOWER(pp.amar_putusan) LIKE '%menolak%' THEN 1 ELSE 0 END) as ditolak,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Tidak Dapat Diterima%'
-					OR pp.status_putusan_nama LIKE '%Putusan NO%'
-					OR LOWER(pp.amar_putusan) LIKE '%tidak dapat diterima%' THEN 1 ELSE 0 END) as tidak_dapat_diterima,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Dicabut%'
-					OR LOWER(pp.amar_putusan) LIKE '%dicabut%' THEN 1 ELSE 0 END) as dicabut,
-				SUM(CASE WHEN pp.status_putusan_nama LIKE '%Gugur%'
-					OR pp.status_putusan_nama LIKE '%Digugurkan%'
-					OR LOWER(pp.amar_putusan) LIKE '%gugur%' THEN 1 ELSE 0 END) as digugurkan
+				SUM(CASE WHEN pp.status_putusan_id = 1 THEN 1 ELSE 0 END) as dikabulkan,
+				SUM(CASE WHEN pp.status_putusan_id = 2 THEN 1 ELSE 0 END) as ditolak,
+				SUM(CASE WHEN pp.status_putusan_id IN (3, 4) THEN 1 ELSE 0 END) as tidak_dapat_diterima,
+				SUM(CASE WHEN pp.status_putusan_id = 7 THEN 1 ELSE 0 END) as dicabut,
+				SUM(CASE WHEN pp.status_putusan_id IN (5, 6) THEN 1 ELSE 0 END) as digugurkan
 			FROM perkara p
 			JOIN perkara_putusan pp ON pp.perkara_id = p.perkara_id
 			LEFT JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id
@@ -212,7 +188,19 @@ class M_laporan_putusan extends CI_Model
         return $query->result();
     }
 
-    // Private helper methods
+    // Get daftar status putusan yang tersedia
+    public function get_status_putusan_list()
+    {
+        $sql = "SELECT DISTINCT sp.id, sp.nama as status_putusan_nama
+                FROM status_putusan sp 
+                JOIN perkara_putusan pp ON sp.id = pp.status_putusan_id
+                WHERE sp.nama IS NOT NULL 
+                  AND sp.nama != ''
+                ORDER BY sp.nama";
+
+        $query = $this->db->query($sql);
+        return $query->result();
+    }    // Private helper methods
     private function _get_wilayah_condition($wilayah)
     {
         if ($wilayah === 'Semua') return '';
@@ -242,33 +230,33 @@ class M_laporan_putusan extends CI_Model
 
     private function _get_status_condition($status_putusan)
     {
+        if ($status_putusan === 'semua' || empty($status_putusan)) return '';
+
+        // Jika berupa ID numerik, gunakan langsung
+        if (is_numeric($status_putusan)) {
+            return " AND pp.status_putusan_id = " . (int)$status_putusan;
+        }
+
+        // Mapping untuk backward compatibility
         switch ($status_putusan) {
             case 'dikabulkan':
-                return " AND (pp.status_putusan_nama LIKE '%Dikabulkan%' 
-						OR LOWER(pp.amar_putusan) LIKE '%dikabulkan%'
-						OR LOWER(pp.amar_putusan) LIKE '%mengabulkan%')";
+                return " AND pp.status_putusan_id = 1"; // Dikabulkan
 
             case 'ditolak':
-                return " AND (pp.status_putusan_nama LIKE '%Ditolak%'
-						OR LOWER(pp.amar_putusan) LIKE '%ditolak%'
-						OR LOWER(pp.amar_putusan) LIKE '%menolak%')";
+                return " AND pp.status_putusan_id = 2"; // Ditolak
 
             case 'tidak_dapat_diterima':
-                return " AND (pp.status_putusan_nama LIKE '%Tidak Dapat Diterima%'
-						OR pp.status_putusan_nama LIKE '%Putusan NO%'
-						OR LOWER(pp.amar_putusan) LIKE '%tidak dapat diterima%')";
+                return " AND pp.status_putusan_id IN (3, 4)"; // NO/Tidak dapat diterima
 
             case 'dicabut':
-                return " AND (pp.status_putusan_nama LIKE '%Dicabut%'
-						OR LOWER(pp.amar_putusan) LIKE '%dicabut%')";
+                return " AND pp.status_putusan_id = 7"; // Dicabut
 
             case 'digugurkan':
-                return " AND (pp.status_putusan_nama LIKE '%Gugur%'
-						OR pp.status_putusan_nama LIKE '%Digugurkan%'
-						OR LOWER(pp.amar_putusan) LIKE '%gugur%')";
+                return " AND pp.status_putusan_id IN (5, 6)"; // Gugur/Digugurkan
 
             default:
-                return ''; // semua status
+                // Jika berupa nama status, cari berdasarkan nama
+                return " AND (pp.status_putusan_nama LIKE '%" . $this->db->escape_str($status_putusan) . "%')";;
         }
     }
 }

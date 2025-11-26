@@ -45,6 +45,9 @@ class Laporan_putusan extends CI_Controller
         // Get list jenis perkara for dropdown
         $data['jenis_perkara_list'] = $this->M_laporan_putusan->get_jenis_perkara_list();
 
+        // Get list status putusan for dropdown
+        $data['status_putusan_list'] = $this->M_laporan_putusan->get_status_putusan_list();
+
         // Pass selected values to view
         $data['selected_bulan'] = $lap_bulan;
         $data['selected_tahun'] = $lap_tahun;
