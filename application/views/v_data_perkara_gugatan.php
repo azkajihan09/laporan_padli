@@ -110,8 +110,6 @@
 												<option value="yearly" <?php echo ($selected_report == 'yearly') ? 'selected' : ''; ?>>Laporan Tahunan</option>
 												<option value="monthly" <?php echo ($selected_report == 'monthly') ? 'selected' : ''; ?>>Breakdown Bulanan</option>
 												<option value="comparison" <?php echo ($selected_report == 'comparison') ? 'selected' : ''; ?>>Perbandingan Gugat vs Talak</option>
-												<option value="faktor" <?php echo ($selected_report == 'faktor') ? 'selected' : ''; ?>>Faktor Perceraian</option>
-												<option value="faktor_detail" <?php echo ($selected_report == 'faktor_detail') ? 'selected' : ''; ?>>Detail Faktor Perceraian</option>
 											</select>
 										</div>
 									</div>
