@@ -4,10 +4,9 @@
   	<a href="<?php echo site_url('Admin/Dashboard') ?>" class="brand-link">
   		<img src="<?php echo base_url() ?>assets/dist/img/logo-mahkamah-agung.png" alt="Logo PA Amuntai" class="brand-image img-circle elevation-3" style="opacity: .8">
   		<span class="brand-text font-weight-light">SI LAPER</span>
-		
-		
-		
-  		
+  		<br><small>(Sistem Laporan Perkara)</small>
+
+
   	</a>
 
   	<!-- Sidebar -->
@@ -63,64 +62,60 @@
   						<li class="nav-item">
   							<a href="<?php echo site_url('Data_Perkara_Gugatan') ?>" class="nav-link">
   								<i class="fas fa-file-alt nav-icon"></i>
-  								<p>Data Perkara Gugatan</p>
-  							</a>
-  						</li>
-  						<li class="nav-item">
-  							<a href="<?php echo site_url('Faktor_perceraian_detail') ?>" class="nav-link">
-  								<i class="fas fa-chart-pie nav-icon"></i>
-  								<p>FAKTOR PERCERAIAN DETAIL</p>
-  							</a>
-  						</li>
-  						<li class="nav-item">
-  							<a href="<?php echo site_url('Data_Cerai_Gugat') ?>" class="nav-link">
-  								<i class="fas fa-heart-broken nav-icon"></i>
-  								<p>Data Cerai Gugat</p>
-  							</a>
-  						</li>
-  						<li class="nav-item">
-  							<a href="<?php echo site_url('Statistik_Gugatan') ?>" class="nav-link">
-  								<i class="fas fa-chart-pie nav-icon"></i>
-  								<p>Statistik Gugatan</p>
+  								<p>Laporan Gugatan</p>
   							</a>
   						</li>
   						<li class="nav-item">
   							<a href="<?php echo site_url('Laporan_Gugatan') ?>" class="nav-link">
   								<i class="fas fa-file-pdf nav-icon"></i>
-  								<p>Laporan Gugatan</p>
+  								<p>Laporan Gugatan Detail</p>
+  							</a>
+  						</li>
+  						<li class="nav-item">
+  							<a href="<?php echo site_url('Faktor_Perceraian_Detail') ?>" class="nav-link">
+  								<i class="fas fa-chart-pie nav-icon"></i>
+  								<p>FAKTOR PERCERAIAN DETAIL</p>
+  							</a>
+  						</li>
+
+  					</ul>
+  				</li>
+  				<!-- Data Permohonan Menu -->
+  				<li class="nav-item">
+  					<a href="#" class="nav-link">
+  						<i class="nav-icon fas fa-map-marked-alt"></i>
+  						<p>
+  							DATA PERMOHONAN
+  							<i class="fas fa-angle-left right"></i>
+  						</p>
+  					</a>
+  					<ul class="nav nav-treeview">
+  						<li class="nav-item">
+  							<a href="<?php echo site_url('Data_Permohonan') ?>" class="nav-link">
+  								<i class="fas fa-chart-bar nav-icon"></i>
+  								<p>LAPORAN PERMOHONAN PER WILAYAH</p>
   							</a>
   						</li>
   					</ul>
   				</li>
-
-
-
-  				<!-- Data Perceraian Menu -->
-  				<!-- <li class="nav-item">
-					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-heart-broken"></i>
-						<p>
-							DATA PERCERAIAN
-							<i class="fas fa-angle-left right"></i>
-						</p>
-					</a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a href="<?php echo site_url('Data_Perceraian_hsu') ?>" class="nav-link">
-								<i class="fas fa-map-marker-alt nav-icon"></i>
-								<p>HULU SUNGAI UTARA</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="<?php echo site_url('Data_Perceraian_balangan') ?>" class="nav-link">
-								<i class="fas fa-map-marker-alt nav-icon"></i>
-								<p>BALANGAN</p>
-							</a>
-						</li>
-						
-					</ul>
-				</li> -->
-
+  				<!-- Laporan Putusan Menu -->
+  				<li class="nav-item">
+  					<a href="#" class="nav-link">
+  						<i class="nav-icon fas fa-gavel"></i>
+  						<p>
+  							LAPORAN PUTUSAN
+  							<i class="fas fa-angle-left right"></i>
+  						</p>
+  					</a>
+  					<ul class="nav nav-treeview">
+  						<li class="nav-item">
+  							<a href="<?php echo site_url('Laporan_putusan') ?>" class="nav-link">
+  								<i class="fas fa-clipboard-list nav-icon"></i>
+  								<p>LAPORAN HASIL PUTUSAN PERKARA</p>
+  							</a>
+  						</li>
+  					</ul>
+  				</li>
   				<!-- Akta Cerai Menu -->
   				<li class="nav-item">
   					<a href="#" class="nav-link">
@@ -141,44 +136,6 @@
   							<a href="<?php echo site_url('Penyerahan_akta_cerai') ?>" class="nav-link">
   								<i class="fas fa-handshake nav-icon"></i>
   								<p>LAPORAN PENYERAHAN AKTA CERAI</p>
-  							</a>
-  						</li>
-  					</ul>
-  				</li>
-
-  				<!-- Laporan Putusan Menu -->
-  				<li class="nav-item">
-  					<a href="#" class="nav-link">
-  						<i class="nav-icon fas fa-gavel"></i>
-  						<p>
-  							LAPORAN PUTUSAN
-  							<i class="fas fa-angle-left right"></i>
-  						</p>
-  					</a>
-  					<ul class="nav nav-treeview">
-  						<li class="nav-item">
-  							<a href="<?php echo site_url('Laporan_putusan') ?>" class="nav-link">
-  								<i class="fas fa-clipboard-list nav-icon"></i>
-  								<p>LAPORAN HASIL PUTUSAN PERKARA</p>
-  							</a>
-  						</li>
-  					</ul>
-  				</li>
-
-  				<!-- Data Permohonan Menu -->
-  				<li class="nav-item">
-  					<a href="#" class="nav-link">
-  						<i class="nav-icon fas fa-map-marked-alt"></i>
-  						<p>
-  							DATA PERMOHONAN
-  							<i class="fas fa-angle-left right"></i>
-  						</p>
-  					</a>
-  					<ul class="nav nav-treeview">
-  						<li class="nav-item">
-  							<a href="<?php echo site_url('Data_Permohonan') ?>" class="nav-link">
-  								<i class="fas fa-chart-bar nav-icon"></i>
-  								<p>LAPORAN PERMOHONAN PER WILAYAH</p>
   							</a>
   						</li>
   					</ul>

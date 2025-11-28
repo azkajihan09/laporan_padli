@@ -1,8 +1,9 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Faktor_perceraian_detail extends CI_Controller {
+class Faktor_perceraian_detail extends CI_Controller
+{
 
 	public function __construct()
 	{
@@ -15,20 +16,27 @@ class Faktor_perceraian_detail extends CI_Controller {
 		// Set default values jika tidak ada POST data
 		$lap_tahun = $this->input->post('lap_tahun');
 		$wilayah = $this->input->post('wilayah');
-		
-		if(empty($lap_tahun)) {
+
+		if (empty($lap_tahun)) {
 			$lap_tahun = date('Y');
 		}
-		if(empty($wilayah)) {
+		if (empty($wilayah)) {
 			$wilayah = 'Balangan';
 		}
-		
+
+		// Mapping wilayah untuk konsistensi dengan database
+		if ($wilayah == 'HSU') {
+			$wilayah_param = 'Hulu Sungai Utara';
+		} else {
+			$wilayah_param = $wilayah;
+		}
+
 		// Prepare data for view
 		$data = array();
-		$data['datafilter'] = $this->M_faktor_perceraian_detail->data_faktor_perceraian_detail($lap_tahun, $wilayah);
+		$data['datafilter'] = $this->M_faktor_perceraian_detail->data_faktor_perceraian_detail($lap_tahun, $wilayah_param);
 		$data['selected_tahun'] = $lap_tahun;
 		$data['selected_wilayah'] = $wilayah;
-		
+
 		// Load views
 		$this->load->view('template/new_header');
 		$this->load->view('template/new_sidebar');

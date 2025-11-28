@@ -89,7 +89,26 @@ class M_faktor_perceraian_detail extends CI_Model
 			";
 			$query = $this->db->query($sql, array($lap_tahun, $lap_tahun));
 		} else {
-			// Handle specific region case
+			// Handle specific region case with improved filtering
+			$where_alamat = "";
+			$params = array($lap_tahun, $lap_tahun);
+
+			if ($wilayah == 'Hulu Sungai Utara' || $wilayah == 'HSU') {
+				$where_alamat = "AND (pp1.alamat LIKE '%Hulu Sungai Utara%' OR pp1.alamat LIKE '%HSU%' 
+								OR pp1.alamat LIKE '%Amuntai%' OR pp1.alamat LIKE '%Haur Gading%' 
+								OR pp1.alamat LIKE '%Banjang%' OR pp1.alamat LIKE '%Paminggir%' 
+								OR pp1.alamat LIKE '%Babirik%' OR pp1.alamat LIKE '%Sungai Pandan%' 
+								OR pp1.alamat LIKE '%Danau Panggang%' OR pp1.alamat LIKE '%Sungai Tabukan%')";
+			} elseif ($wilayah == 'Balangan') {
+				$where_alamat = "AND (pp1.alamat LIKE '%Balangan%' OR pp1.alamat LIKE '%Paringin%' 
+								OR pp1.alamat LIKE '%Awayan%' OR pp1.alamat LIKE '%Tebing Tinggi%' 
+								OR pp1.alamat LIKE '%Juai%' OR pp1.alamat LIKE '%Lampihong%' 
+								OR pp1.alamat LIKE '%Halong%' OR pp1.alamat LIKE '%Batumandi%')";
+			} else {
+				$where_alamat = "AND pp1.alamat LIKE ?";
+				$params = array($lap_tahun, '%' . $wilayah . '%', $lap_tahun, '%' . $wilayah . '%');
+			}
+
 			$sql = "
 				SELECT
 					faktor.nama AS FaktorPerceraian,
@@ -121,7 +140,7 @@ class M_faktor_perceraian_detail extends CI_Model
 							JOIN pihak pd ON pp1.pihak_id = pd.id
 						WHERE
 							YEAR(pac.tgl_akta_cerai) = ?
-							AND pp1.alamat LIKE ?
+							$where_alamat
 						GROUP BY
 							pac.faktor_perceraian_id
 					) AS agg ON faktor.id = agg.faktor_perceraian_id
@@ -158,17 +177,16 @@ class M_faktor_perceraian_detail extends CI_Model
 							JOIN pihak pd ON pp1.pihak_id = pd.id
 						WHERE
 							YEAR(pac.tgl_akta_cerai) = ?
-							AND pp1.alamat LIKE ?
+							$where_alamat
 						GROUP BY
 							pac.faktor_perceraian_id
 					) AS agg ON faktor.id = agg.faktor_perceraian_id
 				WHERE
 					faktor.aktif = 'Y'
 			";
-			$wilayah_param = '%' . $wilayah . '%';
-			$query = $this->db->query($sql, array($lap_tahun, $wilayah_param, $lap_tahun, $wilayah_param));
+			$query = $this->db->query($sql, $params);
 		}
-		
+
 		return $query->result();
 	}
 }
