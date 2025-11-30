@@ -291,9 +291,9 @@
 												$total_sisa = $total_masuk - $total_putus;
 												$total_persentase = ($total_masuk > 0) ? round(($total_putus / $total_masuk) * 100, 1) : 0;
 												?>
-												<tfoot class="bg-light">
+												<!-- <tfoot class="bg-light">
 													<tr class="font-weight-bold">
-														<th colspan="2">TOTAL KESELURUHAN</th>
+														<th colspan="2">TOTAL KESELURUHAN 1</th>
 														<th class="text-center"><?php echo number_format($total_masuk, 0, ',', '.'); ?></th>
 														<th class="text-center"><?php echo number_format($total_putus, 0, ',', '.'); ?></th>
 														<th class="text-center"><?php echo number_format($total_sisa, 0, ',', '.'); ?></th>
@@ -308,7 +308,7 @@
 															<span class="badge <?php echo $total_badge_class; ?>"><?php echo $total_persentase; ?>%</span>
 														</th>
 													</tr>
-												</tfoot>
+												</tfoot> -->
 											<?php endif; ?>
 										</table>
 									</div>
