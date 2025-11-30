@@ -108,7 +108,7 @@
 											<select name="report_type" class="form-control" id="report_type">
 												<option value="summary" <?php echo ($selected_report == 'summary') ? 'selected' : ''; ?>>Ringkasan Bulanan</option>
 												<option value="yearly" <?php echo ($selected_report == 'yearly') ? 'selected' : ''; ?>>Laporan Tahunan</option>
-												<option value="monthly" <?php echo ($selected_report == 'monthly') ? 'selected' : ''; ?>>Breakdown Bulanan</option>
+												<!-- <option value="monthly" <?php echo ($selected_report == 'monthly') ? 'selected' : ''; ?>>Breakdown Bulanan</option> -->
 												<option value="comparison" <?php echo ($selected_report == 'comparison') ? 'selected' : ''; ?>>Perbandingan Gugat vs Talak</option>
 											</select>
 										</div>
