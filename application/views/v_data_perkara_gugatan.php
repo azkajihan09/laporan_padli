@@ -80,7 +80,7 @@
 									</div>
 
 									<!-- Jenis Perkara -->
-									<div class="col-md-2">
+									<!-- <div class="col-md-2">
 										<div class="form-group">
 											<label>Jenis Perkara</label>
 											<select name="jenis_perkara" class="form-control" id="jenis_perkara">
@@ -97,6 +97,18 @@
 												<?php else: ?>
 													<option value="Cerai Talak" <?php echo ($selected_jenis == 'Cerai Talak') ? 'selected' : ''; ?>>Cerai Talak</option>
 												<?php endif; ?>
+											</select>
+										</div>
+									</div> -->
+									<div class="col-md-2">
+										<div class="form-group">
+											<label>Jenis Perkara</label>
+											<select name="jenis_perkara" class="form-control" id="jenis_perkara">
+												<option value="Cerai Gugat" <?php echo ($selected_jenis == 'Cerai Gugat') ? 'selected' : ''; ?>>Cerai Gugat</option>
+												<option value="Cerai Talak" <?php echo ($selected_jenis == 'Cerai Talak') ? 'selected' : ''; ?>>Cerai Talak</option>
+												<option value="Harta Bersama" <?php echo ($selected_jenis == 'Harta Bersama') ? 'selected' : ''; ?>>Harta Bersama</option>
+												<option value="Isbat Nikah (Kontensius)" <?php echo ($selected_jenis == 'Isbat Nikah (Kontensius)') ? 'selected' : ''; ?>>Isbat Nikah (Kontensius)</option>
+												<option value="Kewarisan" <?php echo ($selected_jenis == 'Kewarisan') ? 'selected' : ''; ?>>Kewarisan</option>
 											</select>
 										</div>
 									</div>
