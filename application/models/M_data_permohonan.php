@@ -18,8 +18,31 @@ class M_data_permohonan extends CI_Model
 				'Paminggir',
 				'Sungai Tabukan'
 			];
-		} else { // Balangan
+		} elseif ($wilayah == 'Balangan') {
 			return [
+				'Paringin',
+				'Paringin Selatan',
+				'Lampihong',
+				'Batumandi',
+				'Awayan',
+				'Halong',
+				'Tebing Tinggi',
+				'Juai'
+			];
+		} else { // Semua wilayah
+			return [
+				// HSU
+				'Danau Panggang',
+				'Babirik',
+				'Sungai Pandan',
+				'Amuntai Selatan',
+				'Amuntai Tengah',
+				'Amuntai Utara',
+				'Banjang',
+				'Haur Gading',
+				'Paminggir',
+				'Sungai Tabukan',
+				// Balangan
 				'Paringin',
 				'Paringin Selatan',
 				'Lampihong',
@@ -45,7 +68,7 @@ class M_data_permohonan extends CI_Model
 		return $case_when;
 	}
 
-	public function data_permohonan($lap_bulan, $lap_tahun, $jenis_perkara, $wilayah = 'HSU')
+	public function data_permohonan($lap_bulan, $lap_tahun, $jenis_perkara, $wilayah = 'Semua')
 	{
 		$kecamatan_list = $this->get_kecamatan_list($wilayah);
 		$locations_union = "";
@@ -55,7 +78,7 @@ class M_data_permohonan extends CI_Model
 			$locations_union .= "SELECT '{$kecamatan}' AS KECAMATAN";
 		}
 
-		$fallback = ($wilayah == 'HSU') ? 'HULU SUNGAI UTARA' : 'BALANGAN';
+		$fallback = ($wilayah == 'HSU') ? 'HULU SUNGAI UTARA' : (($wilayah == 'Balangan') ? 'BALANGAN' : 'LAINNYA');
 		$case_when = $this->build_case_when($wilayah, $fallback);
 		$kecamatan_filter = "'" . implode("', '", $kecamatan_list) . "'";
 
@@ -139,7 +162,7 @@ class M_data_permohonan extends CI_Model
 		return $query->result();
 	}
 
-	public function data_permohonan_tahunan($lap_tahun, $jenis_perkara, $wilayah = 'HSU')
+	public function data_permohonan_tahunan($lap_tahun, $jenis_perkara, $wilayah = 'Semua')
 	{
 		$kecamatan_list = $this->get_kecamatan_list($wilayah);
 		$locations_union = "";
@@ -149,7 +172,7 @@ class M_data_permohonan extends CI_Model
 			$locations_union .= "SELECT '{$kecamatan}' AS KECAMATAN";
 		}
 
-		$fallback = ($wilayah == 'HSU') ? 'HULU SUNGAI UTARA' : 'BALANGAN';
+		$fallback = ($wilayah == 'HSU') ? 'HULU SUNGAI UTARA' : (($wilayah == 'Balangan') ? 'BALANGAN' : 'LAINNYA');
 		$case_when = $this->build_case_when($wilayah, $fallback);
 		$kecamatan_filter = "'" . implode("', '", $kecamatan_list) . "'";
 
@@ -225,7 +248,7 @@ class M_data_permohonan extends CI_Model
 		return $query->result();
 	}
 
-	public function data_permohonan_custom($tanggal_mulai, $tanggal_akhir, $jenis_perkara, $wilayah = 'HSU')
+	public function data_permohonan_custom($tanggal_mulai, $tanggal_akhir, $jenis_perkara, $wilayah = 'Semua')
 	{
 		$kecamatan_list = $this->get_kecamatan_list($wilayah);
 		$locations_union = "";
@@ -235,7 +258,7 @@ class M_data_permohonan extends CI_Model
 			$locations_union .= "SELECT '{$kecamatan}' AS KECAMATAN";
 		}
 
-		$fallback = ($wilayah == 'HSU') ? 'HULU SUNGAI UTARA' : 'BALANGAN';
+		$fallback = ($wilayah == 'HSU') ? 'HULU SUNGAI UTARA' : (($wilayah == 'Balangan') ? 'BALANGAN' : 'LAINNYA');
 		$case_when = $this->build_case_when($wilayah, $fallback);
 		$kecamatan_filter = "'" . implode("', '", $kecamatan_list) . "'";
 

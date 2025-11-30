@@ -24,7 +24,7 @@ class Data_Permohonan extends CI_Controller
 		$lap_bulan = $this->input->post('lap_bulan') ?: date('m');
 		$lap_tahun = $this->input->post('lap_tahun') ?: date('Y');
 		$jenis_perkara = $this->input->post('jenis_perkara') ?: 'Dispensasi Kawin';
-		$wilayah = $this->input->post('wilayah') ?: 'HSU';
+		$wilayah = $this->input->post('wilayah') ?: 'Semua';
 		$jenis_laporan = $this->input->post('jenis_laporan') ?: 'bulanan';
 
 		// Get data based on report type
@@ -63,7 +63,7 @@ class Data_Permohonan extends CI_Controller
 		$lap_bulan = $this->input->post('lap_bulan') ?: date('m');
 		$lap_tahun = $this->input->post('lap_tahun') ?: date('Y');
 		$jenis_perkara = $this->input->post('jenis_perkara') ?: 'Dispensasi Kawin';
-		$wilayah = $this->input->post('wilayah') ?: 'HSU';
+		$wilayah = $this->input->post('wilayah') ?: 'Semua';
 		$jenis_laporan = $this->input->post('jenis_laporan') ?: 'bulanan';
 
 		// Load PHPExcel library
