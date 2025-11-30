@@ -119,17 +119,16 @@ class M_data_permohonan extends CI_Model
 			SUM(CASE WHEN date_type = 'tanggal_putusan' THEN COUNT ELSE 0 END) AS PERKARA_PUTUS
 		FROM (
 			SELECT 
-				{$case_when} AS KECAMATAN,
+				'TOTAL' AS KECAMATAN,
 				'tanggal_pendaftaran' AS date_type, COUNT(*) AS COUNT
 			FROM perkara p
 			INNER JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id AND pp1.urutan = 1
 			WHERE YEAR(p.tanggal_pendaftaran) = ? 
 				AND MONTH(p.tanggal_pendaftaran) = ? 
 				AND p.jenis_perkara_nama LIKE ?
-			GROUP BY KECAMATAN
 			UNION ALL
 			SELECT 
-				{$case_when} AS KECAMATAN,
+				'TOTAL' AS KECAMATAN,
 				'tanggal_putusan' AS date_type, COUNT(*) AS COUNT
 			FROM perkara p
 			INNER JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id AND pp1.urutan = 1
@@ -137,9 +136,7 @@ class M_data_permohonan extends CI_Model
 			WHERE YEAR(pp.tanggal_putusan) = ? 
 				AND MONTH(pp.tanggal_putusan) = ? 
 				AND p.jenis_perkara_nama LIKE ?
-			GROUP BY KECAMATAN
 		) AS subquery
-		WHERE KECAMATAN IN ({$kecamatan_filter})
 		ORDER BY CASE WHEN KECAMATAN = 'TOTAL' THEN 1 ELSE 0 END, KECAMATAN";
 
 		$like_pattern = '%' . $jenis_perkara . '%';
@@ -211,25 +208,22 @@ class M_data_permohonan extends CI_Model
 			SUM(CASE WHEN date_type = 'tanggal_putusan' THEN COUNT ELSE 0 END) AS PERKARA_PUTUS
 		FROM (
 			SELECT 
-				{$case_when} AS KECAMATAN,
+				'TOTAL' AS KECAMATAN,
 				'tanggal_pendaftaran' AS date_type, COUNT(*) AS COUNT
 			FROM perkara p
 			INNER JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id AND pp1.urutan = 1
 			WHERE YEAR(p.tanggal_pendaftaran) = ? 
 				AND p.jenis_perkara_nama LIKE ?
-			GROUP BY KECAMATAN
 			UNION ALL
 			SELECT 
-				{$case_when} AS KECAMATAN,
+				'TOTAL' AS KECAMATAN,
 				'tanggal_putusan' AS date_type, COUNT(*) AS COUNT
 			FROM perkara p
 			INNER JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id AND pp1.urutan = 1
 			INNER JOIN perkara_putusan pp ON p.perkara_id = pp.perkara_id
 			WHERE YEAR(pp.tanggal_putusan) = ? 
 				AND p.jenis_perkara_nama LIKE ?
-			GROUP BY KECAMATAN
 		) AS subquery
-		WHERE KECAMATAN IN ({$kecamatan_filter})
 		ORDER BY CASE WHEN KECAMATAN = 'TOTAL' THEN 1 ELSE 0 END, KECAMATAN";
 
 		$like_pattern = '%' . $jenis_perkara . '%';
@@ -297,25 +291,22 @@ class M_data_permohonan extends CI_Model
 			SUM(CASE WHEN date_type = 'tanggal_putusan' THEN COUNT ELSE 0 END) AS PERKARA_PUTUS
 		FROM (
 			SELECT 
-				{$case_when} AS KECAMATAN,
+				'TOTAL' AS KECAMATAN,
 				'tanggal_pendaftaran' AS date_type, COUNT(*) AS COUNT
 			FROM perkara p
 			INNER JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id AND pp1.urutan = 1
 			WHERE p.tanggal_pendaftaran BETWEEN ? AND ? 
 				AND p.jenis_perkara_nama LIKE ?
-			GROUP BY KECAMATAN
 			UNION ALL
 			SELECT 
-				{$case_when} AS KECAMATAN,
+				'TOTAL' AS KECAMATAN,
 				'tanggal_putusan' AS date_type, COUNT(*) AS COUNT
 			FROM perkara p
 			INNER JOIN perkara_pihak1 pp1 ON p.perkara_id = pp1.perkara_id AND pp1.urutan = 1
 			INNER JOIN perkara_putusan pp ON p.perkara_id = pp.perkara_id
 			WHERE pp.tanggal_putusan BETWEEN ? AND ? 
 				AND p.jenis_perkara_nama LIKE ?
-			GROUP BY KECAMATAN
 		) AS subquery
-		WHERE KECAMATAN IN ({$kecamatan_filter})
 		ORDER BY CASE WHEN KECAMATAN = 'TOTAL' THEN 1 ELSE 0 END, KECAMATAN";
 
 		$like_pattern = '%' . $jenis_perkara . '%';
