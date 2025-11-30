@@ -281,46 +281,34 @@
                                                             <td><?php echo $row->tanggal_putusan; ?></td>
                                                             <td>
                                                                 <?php
-                                                                $badge_class = 'secondary';
-                                                                switch ($row->status_putusan_id) {
-                                                                    case 1: // Dikabulkan
-                                                                        $badge_class = 'success';
-                                                                        break;
-                                                                    case 2: // Ditolak
-                                                                        $badge_class = 'danger';
-                                                                        break;
-                                                                    case 3:
-                                                                    case 4: // Tidak dapat diterima / NO
-                                                                        $badge_class = 'warning';
-                                                                        break;
-                                                                    case 7: // Dicabut
-                                                                        $badge_class = 'info';
-                                                                        break;
-                                                                    case 5:
-                                                                    case 6: // Gugur/Digugurkan
-                                                                        $badge_class = 'dark';
-                                                                        break;
-                                                                    default:
-                                                                        $badge_class = 'secondary';
-                                                                        break;
-                                                                }
-                                                                ?>
-                                                                <span class="badge badge-<?php echo $badge_class; ?>">
-                                                                    <?php echo $row->status_putusan_nama; ?>
-                                                                </span>
+                                                                // Set badge berdasarkan status putusan
+                                                                if ($row->status_putusan_nama == 'Dikabulkan' || $row->status_putusan_id == 1): ?>
+                                                                    <span class="badge badge-success"><?php echo $row->status_putusan_nama; ?></span>
+                                                                <?php elseif ($row->status_putusan_nama == 'Ditolak' || $row->status_putusan_id == 2): ?>
+                                                                    <span class="badge badge-danger"><?php echo $row->status_putusan_nama; ?></span>
+                                                                <?php elseif (in_array($row->status_putusan_id, [3, 4]) || strpos($row->status_putusan_nama, 'Tidak') !== false): ?>
+                                                                    <span class="badge badge-warning"><?php echo $row->status_putusan_nama; ?></span>
+                                                                <?php elseif ($row->status_putusan_nama == 'Dicabut' || $row->status_putusan_id == 7): ?>
+                                                                    <span class="badge badge-info"><?php echo $row->status_putusan_nama; ?></span>
+                                                                <?php elseif (in_array($row->status_putusan_id, [5, 6]) || strpos($row->status_putusan_nama, 'Gugur') !== false): ?>
+                                                                    <span class="badge badge-dark"><?php echo $row->status_putusan_nama; ?></span>
+                                                                <?php else: ?>
+                                                                    <span class="badge badge-secondary"><?php echo $row->status_putusan_nama; ?></span>
+                                                                <?php endif; ?>
                                                             </td>
                                                             <td><?php echo character_limiter($row->ringkasan_amar, 50); ?></td>
                                                             <td>
                                                                 <?php
                                                                 $hari = $row->hari_sejak_putusan;
-                                                                if ($hari < 30) {
-                                                                    echo '<span class="badge badge-success">' . $hari . ' hari</span>';
-                                                                } elseif ($hari < 90) {
-                                                                    echo '<span class="badge badge-warning">' . $hari . ' hari</span>';
-                                                                } else {
-                                                                    echo '<span class="badge badge-danger">' . $hari . ' hari</span>';
-                                                                }
-                                                                ?>
+                                                                if ($hari < 30): ?>
+                                                                    <span class="badge badge-success"><?php echo $hari . ' hari'; ?></span>
+                                                                <?php elseif ($hari < 90): ?>
+                                                                    <span class="badge badge-warning"><?php echo $hari . ' hari'; ?></span>
+                                                                <?php elseif ($hari < 180): ?>
+                                                                    <span class="badge badge-danger"><?php echo $hari . ' hari'; ?></span>
+                                                                <?php else: ?>
+                                                                    <span class="badge badge-dark"><?php echo $hari . ' hari'; ?></span>
+                                                                <?php endif; ?>
                                                             </td>
                                                         </tr>
                                                     <?php endforeach; ?>
@@ -475,6 +463,44 @@
 
         .badge {
             font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+        }
+
+        .badge-success {
+            background-color: #28a745 !important;
+            color: white !important;
+        }
+
+        .badge-danger {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+
+        .badge-warning {
+            background-color: #ffc107 !important;
+            color: #212529 !important;
+        }
+
+        .badge-info {
+            background-color: #17a2b8 !important;
+            color: white !important;
+        }
+
+        .badge-dark {
+            background-color: #343a40 !important;
+            color: white !important;
+        }
+
+        .badge-secondary {
+            background-color: #6c757d !important;
+            color: white !important;
+        }
+
+        .badge-primary {
+            background-color: #007bff !important;
+            color: white !important;
         }
 
         .table th {
