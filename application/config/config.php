@@ -230,6 +230,19 @@ $config['log_threshold'] = 0;
 
 /*
 |--------------------------------------------------------------------------
+| Suppress PHP 8.2+ Dynamic Property Deprecation Warnings
+|--------------------------------------------------------------------------
+|
+| PHP 8.2+ shows deprecation warnings for dynamic property creation.
+| CodeIgniter 3.x creates many dynamic properties, so we suppress these
+| specific warnings while keeping other error reporting intact.
+|
+*/
+// Suppress only dynamic property deprecation warnings (E_DEPRECATED = 8192)
+error_reporting(E_ALL & ~E_DEPRECATED);
+
+/*
+|--------------------------------------------------------------------------
 | Error Logging Directory Path
 |--------------------------------------------------------------------------
 |
