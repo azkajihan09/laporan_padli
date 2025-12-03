@@ -682,7 +682,21 @@ $currentDate = date('d F Y');
 							</div>
 							<div class="stat-card-content">
 								<h3 class="stat-card-number" data-target="<?php echo isset($daily_statistics->perkara_putus_hari_ini) ? $daily_statistics->perkara_putus_hari_ini : 0; ?>">0</h3>
-								<p class="stat-card-label">Perkara Putus Hari Ini</p>
+								<p class="stat-card-label">Perkara Putus</p>
+								<div class="stat-card-breakdown">
+									<div class="breakdown-item">
+										<span class="breakdown-label">Hari Ini:</span>
+										<span class="breakdown-value"><?php echo isset($daily_statistics->perkara_putus_hari_ini) ? $daily_statistics->perkara_putus_hari_ini : 0; ?></span>
+									</div>
+									<div class="breakdown-item">
+										<span class="breakdown-label">Bulan Ini:</span>
+										<span class="breakdown-value"><?php echo isset($monthly_statistics->perkara_putus_bulan_ini) ? $monthly_statistics->perkara_putus_bulan_ini : 0; ?></span>
+									</div>
+									<div class="breakdown-item">
+										<span class="breakdown-label">Tahun Ini:</span>
+										<span class="breakdown-value"><?php echo isset($yearly_statistics->perkara_putus_tahun_ini) ? $yearly_statistics->perkara_putus_tahun_ini : 0; ?></span>
+									</div>
+								</div>
 								<div class="stat-card-progress">
 									<div class="progress">
 										<div class="progress-bar" data-width="75"></div>
@@ -702,7 +716,21 @@ $currentDate = date('d F Y');
 							</div>
 							<div class="stat-card-content">
 								<h3 class="stat-card-number" data-target="<?php echo isset($daily_statistics->perkara_minutasi_hari_ini) ? $daily_statistics->perkara_minutasi_hari_ini : 0; ?>">0</h3>
-								<p class="stat-card-label">Minutasi Hari Ini</p>
+								<p class="stat-card-label">Minutasi</p>
+								<div class="stat-card-breakdown">
+									<div class="breakdown-item">
+										<span class="breakdown-label">Hari Ini:</span>
+										<span class="breakdown-value"><?php echo isset($daily_statistics->perkara_minutasi_hari_ini) ? $daily_statistics->perkara_minutasi_hari_ini : 0; ?></span>
+									</div>
+									<div class="breakdown-item">
+										<span class="breakdown-label">Bulan Ini:</span>
+										<span class="breakdown-value"><?php echo isset($monthly_statistics->perkara_minutasi_bulan_ini) ? $monthly_statistics->perkara_minutasi_bulan_ini : 0; ?></span>
+									</div>
+									<div class="breakdown-item">
+										<span class="breakdown-label">Tahun Ini:</span>
+										<span class="breakdown-value"><?php echo isset($yearly_statistics->perkara_minutasi_tahun_ini) ? $yearly_statistics->perkara_minutasi_tahun_ini : 0; ?></span>
+									</div>
+								</div>
 								<div class="stat-card-progress">
 									<div class="progress">
 										<div class="progress-bar" data-width="60"></div>
@@ -785,7 +813,7 @@ $currentDate = date('d F Y');
 								</div>
 								<div class="performance-stat">
 									<div class="performance-stat-number"><?php echo isset($kinerja_pn->sisa) ? number_format($kinerja_pn->sisa) : '0'; ?></div>
-									<div class="performance-stat-label">Sisa</div>
+									<div class="performance-stat-label">Sisa Perkara Tahun Lalu</div>
 								</div>
 								<div class="performance-stat">
 									<div class="performance-stat-number"><?php echo isset($kinerja_pn->putusan) ? number_format($kinerja_pn->putusan) : '0'; ?></div>
