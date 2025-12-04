@@ -121,50 +121,19 @@ $currentDate = date('d F Y');
 
 		/* Statistics Cards */
 		.stat-card {
-			background: rgba(255, 255, 255, 0.95);
-			backdrop-filter: blur(20px);
-			border-radius: 20px;
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			background: #ffffff;
+			border-radius: 0.375rem;
+			border: 0;
+			box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+			transition: all 0.3s ease;
 			overflow: hidden;
 			position: relative;
 			height: 100%;
 		}
 
-		.stat-card::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			height: 5px;
-			transition: height 0.3s ease;
-		}
-
 		.stat-card:hover {
-			transform: translateY(-15px) scale(1.02);
-			box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
-		}
-
-		.stat-card:hover::before {
-			height: 8px;
-		}
-
-		.stat-card-primary::before {
-			background: linear-gradient(90deg, #667eea, #764ba2);
-		}
-
-		.stat-card-success::before {
-			background: linear-gradient(90deg, #56ab2f, #a8e6cf);
-		}
-
-		.stat-card-warning::before {
-			background: linear-gradient(90deg, #f093fb, #f5576c);
-		}
-
-		.stat-card-danger::before {
-			background: linear-gradient(90deg, #4facfe, #00f2fe);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, .15);
+			transform: translateY(-3px);
 		}
 
 		.stat-card-body {
@@ -184,22 +153,23 @@ $currentDate = date('d F Y');
 
 
 		.stat-card-primary {
-			background: #007bff;
 			color: #ffffff;
+			background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
 		}
 
-		.stat-card-success .stat-card-icon {
-			background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+		.stat-card-success {
+			color: #ffffff;
+			background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
 		}
 
 		.stat-card-warning {
-			background: #ffc107;
 			color: #212529;
+			background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
 		}
 
 		.stat-card-danger {
-			background: #dc3545;
 			color: #ffffff;
+			background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
 		}
 
 		.stat-card-content {
@@ -207,142 +177,123 @@ $currentDate = date('d F Y');
 		}
 
 		.stat-card-number {
-			font-size: 2rem;
+			font-size: 2.5rem;
 			font-weight: 700;
 			margin: 0;
 			line-height: 1;
 			color: inherit;
+			font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+			text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 		}
 
 		.stat-card-label {
-			font-size: 0.9rem;
-			font-weight: 500;
+			font-size: 1.1rem;
+			font-weight: 600;
 			color: inherit;
-			margin: 5px 0 0 0;
-			opacity: 0.8;
+			margin: 8px 0 0 0;
+			opacity: 0.9;
+			font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 		}
 
 		.stat-card-breakdown {
-			margin: 10px 0;
-			padding: 10px;
-			background: rgba(102, 126, 234, 0.05);
+			margin: 15px 0;
+			padding: 15px;
+			background: rgba(255, 255, 255, 0.15);
 			border-radius: 8px;
+			backdrop-filter: blur(10px);
+			border: 1px solid rgba(255, 255, 255, 0.2);
 		}
 
 		.breakdown-item {
 			display: flex;
 			justify-content: space-between;
-			margin-bottom: 5px;
-			font-size: 0.85rem;
+			margin-bottom: 8px;
+			font-size: 0.9rem;
+			line-height: 1.4;
+		}
+
+		.breakdown-item:last-child {
+			margin-bottom: 0;
 		}
 
 		.breakdown-label {
-			color: #6c757d;
+			color: inherit;
 			font-weight: 500;
+			opacity: 0.9;
 		}
 
 		.breakdown-value {
-			color: #2c3e50;
+			color: inherit;
 			font-weight: 700;
+			text-align: right;
 		}
 
 		.stat-card-progress {
-			margin-top: 15px;
+			margin-top: 20px;
 		}
 
 		.stat-card-progress .progress {
-			height: 8px;
-			border-radius: 10px;
-			background: rgba(0, 0, 0, 0.1);
+			height: 4px;
+			border-radius: 4px;
+			background: rgba(255, 255, 255, 0.3);
 			overflow: hidden;
 			position: relative;
 		}
 
 		.stat-card-progress .progress-bar {
-			border-radius: 10px;
+			border-radius: 4px;
 			transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
 			position: relative;
 			overflow: hidden;
-		}
-
-		.stat-card-progress .progress-bar::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: -100%;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-			animation: progressShine 2s infinite;
-		}
-
-		@keyframes progressShine {
-			0% {
-				left: -100%;
-			}
-
-			100% {
-				left: 100%;
-			}
-		}
-
-		.stat-card-primary .progress-bar {
-			background: linear-gradient(90deg, #667eea, #764ba2);
-		}
-
-		.stat-card-success .progress-bar {
-			background: linear-gradient(90deg, #56ab2f, #a8e6cf);
-		}
-
-		.stat-card-warning .progress-bar {
-			background: linear-gradient(90deg, #f093fb, #f5576c);
-		}
-
-		.stat-card-danger .progress-bar {
-			background: linear-gradient(90deg, #4facfe, #00f2fe);
+			background: rgba(255, 255, 255, 0.9);
 		}
 
 		/* Chart Cards */
 		.chart-card {
-			background: rgba(255, 255, 255, 0.95);
-			backdrop-filter: blur(20px);
-			border-radius: 25px;
-			box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
-			overflow: hidden;
+			background: #ffffff;
+			border-radius: 0.375rem;
+			box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+			border: 0;
 			transition: all 0.3s ease;
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			margin: 0 20px;
+			margin: 0;
+			position: relative;
 		}
 
 		.chart-card:hover {
-			transform: translateY(-8px);
-			box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, .15);
+			transform: translateY(-2px);
 		}
 
 		.chart-card-header {
-			padding: 15px 20px;
+			padding: 20px 25px;
 			background: #ffffff;
 			border-bottom: 1px solid #dee2e6;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			border-radius: 6px 6px 0 0;
+			border-radius: 0.375rem 0.375rem 0 0;
 		}
 
 		.chart-card-title {
-			font-size: 1.2rem;
-			font-weight: 500;
+			font-size: 1.3rem;
+			font-weight: 600;
 			margin: 0;
-			color: #495057;
-			font-family: 'Source Sans Pro', sans-serif;
+			color: #343a40;
+			font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+		}
+
+		.chart-card-title i {
+			color: #007bff;
+			margin-right: 8px;
 		}
 
 		.chart-card-body {
-			padding: 20px;
+			padding: 25px;
 			height: 300px;
 			position: relative;
 			background: #ffffff;
-			border-radius: 0 0 6px 6px;
+			border-radius: 0 0 0.375rem 0.375rem;
 		}
 
 		/* Performance Card */
@@ -365,22 +316,27 @@ $currentDate = date('d F Y');
 		.performance-header {
 			padding: 25px 30px 20px 30px;
 			text-align: center;
+			border-bottom: 1px solid #dee2e6;
 		}
 
 		.performance-title {
-			font-size: 1.4rem;
-			font-weight: 700;
+			font-size: 1.3rem;
+			font-weight: 600;
 			margin: 0 0 10px 0;
-			background: linear-gradient(135deg, #667eea, #764ba2);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
+			color: #343a40;
+			font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+		}
+
+		.performance-title i {
+			color: #007bff;
+			margin-right: 8px;
 		}
 
 		.performance-subtitle {
 			color: #6c757d;
-			font-size: 0.9rem;
+			font-size: 0.95rem;
 			margin: 0;
+			font-weight: 500;
 		}
 
 		.performance-body {
@@ -403,26 +359,35 @@ $currentDate = date('d F Y');
 
 		.performance-stat {
 			text-align: center;
-			padding: 15px;
-			background: #f8f9fa;
-			border-radius: 6px;
+			padding: 20px 15px;
+			background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+			border-radius: 0.375rem;
 			border: 1px solid #dee2e6;
+			transition: all 0.3s ease;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.performance-stat:hover {
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			transform: translateY(-2px);
 		}
 
 		.performance-stat-number {
-			font-size: 1.5rem;
-			font-weight: 600;
-			margin: 0 0 5px 0;
-			color: #495057;
-			font-family: 'Source Sans Pro', sans-serif;
+			font-size: 1.8rem;
+			font-weight: 700;
+			margin: 0 0 8px 0;
+			color: #007bff;
+			font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+			text-shadow: 0 1px 3px rgba(0, 123, 255, 0.2);
 		}
 
 		.performance-stat-label {
-			font-size: 0.8rem;
-			color: #6c757d;
+			font-size: 0.85rem;
+			color: #495057;
 			margin: 0;
 			text-transform: uppercase;
 			letter-spacing: 0.5px;
+			font-weight: 600;
 		}
 
 		/* Responsive Design */
