@@ -38,7 +38,8 @@ class Data_Permohonan extends CI_Controller
 				$data['datafilter'] = $this->M_data_permohonan->data_permohonan_custom($tanggal_mulai, $tanggal_akhir, $jenis_perkara, $wilayah);
 				break;
 			default: // bulanan
-				$data['datafilter'] = $this->M_data_permohonan->data_permohonan($lap_bulan, $lap_tahun, $jenis_perkara, $wilayah);
+				// Use new method that includes sisa calculations
+				$data['datafilter'] = $this->M_data_permohonan->get_sisa_perkara_data($lap_bulan, $lap_tahun, $jenis_perkara, $wilayah, $jenis_laporan);
 				break;
 		}
 
@@ -80,7 +81,7 @@ class Data_Permohonan extends CI_Controller
 		$excel->getActiveSheet()->setTitle('Data Permohonan');
 
 		// Set headers
-		$headers = ['No', 'Kecamatan', 'Perkara Masuk', 'Perkara Putus', 'Persentase Penyelesaian'];
+		$headers = ['No', 'Kecamatan', 'Sisa Bulan Lalu', 'Sisa Tahun Lalu', 'Perkara Masuk', 'Perkara Putus', 'Sisa Perkara', 'Persentase Penyelesaian'];
 
 		$col = 'A';
 		foreach ($headers as $header) {
@@ -100,7 +101,7 @@ class Data_Permohonan extends CI_Controller
 				$data = $this->M_data_permohonan->data_permohonan_custom($tanggal_mulai, $tanggal_akhir, $jenis_perkara, $wilayah);
 				break;
 			default:
-				$data = $this->M_data_permohonan->data_permohonan($lap_bulan, $lap_tahun, $jenis_perkara, $wilayah);
+				$data = $this->M_data_permohonan->get_sisa_perkara_data($lap_bulan, $lap_tahun, $jenis_perkara, $wilayah, $jenis_laporan);
 				break;
 		}
 
@@ -108,19 +109,27 @@ class Data_Permohonan extends CI_Controller
 		$row = 2;
 		$no = 1;
 		foreach ($data as $item) {
+			$sisa_bulan_lalu = isset($item->SISA_BULAN_LALU) ? $item->SISA_BULAN_LALU : 0;
+			$sisa_tahun_lalu = isset($item->SISA_TAHUN_LALU) ? $item->SISA_TAHUN_LALU : 0;
+			$sisa_perkara = $sisa_bulan_lalu + $item->PERKARA_MASUK - $item->PERKARA_PUTUS;
+			$total_perkara = $sisa_bulan_lalu + $item->PERKARA_MASUK;
+
 			$excel->getActiveSheet()->setCellValue('A' . $row, $no++);
 			$excel->getActiveSheet()->setCellValue('B' . $row, $item->KECAMATAN);
-			$excel->getActiveSheet()->setCellValue('C' . $row, $item->PERKARA_MASUK);
-			$excel->getActiveSheet()->setCellValue('D' . $row, $item->PERKARA_PUTUS);
+			$excel->getActiveSheet()->setCellValue('C' . $row, $sisa_bulan_lalu);
+			$excel->getActiveSheet()->setCellValue('D' . $row, $sisa_tahun_lalu);
+			$excel->getActiveSheet()->setCellValue('E' . $row, $item->PERKARA_MASUK);
+			$excel->getActiveSheet()->setCellValue('F' . $row, $item->PERKARA_PUTUS);
+			$excel->getActiveSheet()->setCellValue('G' . $row, $sisa_perkara);
 
 			// Calculate percentage
-			$persentase = ($item->PERKARA_MASUK > 0) ? round(($item->PERKARA_PUTUS / $item->PERKARA_MASUK) * 100, 2) : 0;
-			$excel->getActiveSheet()->setCellValue('E' . $row, $persentase . '%');
+			$persentase = ($total_perkara > 0) ? round(($item->PERKARA_PUTUS / $total_perkara) * 100, 2) : 0;
+			$excel->getActiveSheet()->setCellValue('H' . $row, $persentase . '%');
 			$row++;
 		}
 
 		// Auto size columns
-		foreach (range('A', 'E') as $columnID) {
+		foreach (range('A', 'H') as $columnID) {
 			$excel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
 		}
 

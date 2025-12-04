@@ -236,6 +236,8 @@
 												<tr>
 													<th>No</th>
 													<th>Kecamatan</th>
+													<th>Sisa Bulan Lalu</th>
+													<th>Sisa Tahun Lalu</th>
 													<th>Perkara Masuk</th>
 													<th>Perkara Putus</th>
 													<th>Sisa Perkara</th>
@@ -250,20 +252,31 @@
 															<td><?php echo $no++; ?></td>
 															<td><strong><?php echo $row->KECAMATAN; ?></strong></td>
 															<td class="text-center">
+																<span class="badge badge-secondary"><?php echo isset($row->SISA_BULAN_LALU) ? number_format($row->SISA_BULAN_LALU, 0, ',', '.') : '0'; ?></span>
+															</td>
+															<td class="text-center">
+																<span class="badge badge-light"><?php echo isset($row->SISA_TAHUN_LALU) ? number_format($row->SISA_TAHUN_LALU, 0, ',', '.') : '0'; ?></span>
+															</td>
+															<td class="text-center">
 																<span class="badge badge-info"><?php echo number_format($row->PERKARA_MASUK, 0, ',', '.'); ?></span>
 															</td>
 															<td class="text-center">
 																<span class="badge badge-success"><?php echo number_format($row->PERKARA_PUTUS, 0, ',', '.'); ?></span>
 															</td>
 															<td class="text-center">
-																<?php $sisa = $row->PERKARA_MASUK - $row->PERKARA_PUTUS; ?>
+																<?php
+																// Calculate sisa using formula: sisa bulan lalu + perkara masuk - perkara putus
+																$sisa_bulan_lalu = isset($row->SISA_BULAN_LALU) ? $row->SISA_BULAN_LALU : 0;
+																$sisa = $sisa_bulan_lalu + $row->PERKARA_MASUK - $row->PERKARA_PUTUS;
+																?>
 																<span class="badge <?php echo ($sisa > 0) ? 'badge-warning' : 'badge-secondary'; ?>">
 																	<?php echo number_format($sisa, 0, ',', '.'); ?>
 																</span>
 															</td>
 															<td class="text-center">
 																<?php
-																$persentase = ($row->PERKARA_MASUK > 0) ? round(($row->PERKARA_PUTUS / $row->PERKARA_MASUK) * 100, 1) : 0;
+																$total_perkara = $sisa_bulan_lalu + $row->PERKARA_MASUK;
+																$persentase = ($total_perkara > 0) ? round(($row->PERKARA_PUTUS / $total_perkara) * 100, 1) : 0;
 																$badge_class = '';
 																if ($persentase >= 90) $badge_class = 'badge-success';
 																elseif ($persentase >= 70) $badge_class = 'badge-info';
@@ -276,7 +289,7 @@
 													<?php endforeach; ?>
 												<?php else: ?>
 													<tr>
-														<td colspan="6" class="text-center">
+														<td colspan="8" class="text-center">
 															<div class="alert alert-info">
 																<i class="fas fa-info-circle"></i> Tidak ada data untuk filter yang dipilih
 															</div>
