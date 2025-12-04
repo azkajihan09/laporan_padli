@@ -8,101 +8,66 @@ $currentDate = date('d F Y');
 <div class="content-wrapper modern-dashboard">
 
 	<style>
-		/* Modern Dashboard Styles */
+		/* AdminLTE 3 Dashboard Styles */
 		.modern-dashboard {
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			background: #f4f6f9;
 			min-height: 100vh;
-			position: relative;
-			overflow-x: hidden;
 		}
 
-		.modern-dashboard::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background:
-				radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-				radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-			pointer-events: none;
+		.content-wrapper {
+			background: #f4f6f9 !important;
 		}
 
 		.content-header {
-			position: relative;
-			z-index: 2;
-			background: rgba(255, 255, 255, 0.1);
-			backdrop-filter: blur(15px);
-			border-radius: 20px;
-			margin: 20px;
-			padding: 25px;
-			border: 1px solid rgba(255, 255, 255, 0.2);
-			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+			background: #ffffff;
+			padding: 15px 30px;
+			margin-bottom: 30px;
+			border-bottom: 1px solid #dee2e6;
 		}
 
 		.dashboard-title {
-			background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
-			font-weight: 800;
-			font-size: 2.5rem;
-			text-shadow: none;
+			color: #495057;
+			font-weight: 600;
+			font-size: 1.8rem;
 			margin: 0;
 		}
 
 		.dashboard-subtitle {
-			color: rgba(255, 255, 255, 0.8);
-			font-size: 1.1rem;
+			color: #6c757d;
+			font-size: 0.9rem;
 			margin: 5px 0 0 0;
 		}
 
 		.breadcrumb {
-			background: rgba(255, 255, 255, 0.2);
-			border-radius: 25px;
-			padding: 10px 20px;
-			border: 1px solid rgba(255, 255, 255, 0.3);
+			background: transparent;
+			padding: 0;
+			margin-bottom: 0;
 		}
 
 		.breadcrumb-item a {
-			color: rgba(255, 255, 255, 0.9);
+			color: #007bff;
 			text-decoration: none;
-			transition: all 0.3s ease;
 		}
 
 		.breadcrumb-item a:hover {
-			color: #ffffff;
-			transform: translateY(-1px);
+			color: #0056b3;
 		}
 
 		.breadcrumb-item.active {
-			color: rgba(255, 255, 255, 0.7);
+			color: #6c757d;
 		}
 
-		/* Welcome Card */
+		/* Welcome Card AdminLTE 3 */
 		.welcome-card {
-			background: rgba(255, 255, 255, 0.95);
-			backdrop-filter: blur(20px);
-			border-radius: 25px;
-			padding: 40px;
-			margin: 0 20px 30px 20px;
-			box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			position: relative;
-			overflow: hidden;
+			background: #ffffff;
+			border-radius: 0.375rem;
+			padding: 30px;
+			margin: 0 0 30px 0;
+			box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+			border: 0;
 		}
 
-		.welcome-card::before {
-			content: '';
-			position: absolute;
-			top: -50%;
-			right: -50%;
-			width: 100%;
-			height: 100%;
-			background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-			animation: float 8s ease-in-out infinite;
-		}
+
 
 		@keyframes float {
 
@@ -125,13 +90,10 @@ $currentDate = date('d F Y');
 		}
 
 		.welcome-title {
-			font-size: 2.2rem;
-			font-weight: 700;
+			font-size: 1.8rem;
+			font-weight: 600;
 			margin-bottom: 10px;
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
+			color: #495057;
 		}
 
 		.welcome-subtitle {
@@ -141,12 +103,8 @@ $currentDate = date('d F Y');
 		}
 
 		.welcome-icon {
-			font-size: 5rem;
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
-			animation: pulse 3s infinite;
+			font-size: 3rem;
+			color: #007bff;
 		}
 
 		@keyframes pulse {
@@ -210,67 +168,38 @@ $currentDate = date('d F Y');
 		}
 
 		.stat-card-body {
-			padding: 30px;
+			padding: 20px;
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 			position: relative;
 		}
 
 		.stat-card-icon {
-			width: 80px;
-			height: 80px;
-			border-radius: 20px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 2.2rem;
-			color: white;
-			margin-right: 25px;
-			flex-shrink: 0;
-			position: relative;
-			overflow: hidden;
+			font-size: 2.5rem;
+			color: rgba(255, 255, 255, .8);
+			margin-left: auto;
 		}
 
-		.stat-card-icon::before {
-			content: '';
-			position: absolute;
-			top: -50%;
-			left: -50%;
-			width: 200%;
-			height: 200%;
-			background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-			transform: rotate(45deg);
-			animation: shine 3s infinite;
-		}
 
-		@keyframes shine {
-			0% {
-				transform: translateX(-100%) translateY(-100%) rotate(45deg);
-			}
 
-			50% {
-				transform: translateX(100%) translateY(100%) rotate(45deg);
-			}
-
-			100% {
-				transform: translateX(-100%) translateY(-100%) rotate(45deg);
-			}
-		}
-
-		.stat-card-primary .stat-card-icon {
-			background: linear-gradient(135deg, #667eea, #764ba2);
+		.stat-card-primary {
+			background: #007bff;
+			color: #ffffff;
 		}
 
 		.stat-card-success .stat-card-icon {
 			background: linear-gradient(135deg, #56ab2f, #a8e6cf);
 		}
 
-		.stat-card-warning .stat-card-icon {
-			background: linear-gradient(135deg, #f093fb, #f5576c);
+		.stat-card-warning {
+			background: #ffc107;
+			color: #212529;
 		}
 
-		.stat-card-danger .stat-card-icon {
-			background: linear-gradient(135deg, #4facfe, #00f2fe);
+		.stat-card-danger {
+			background: #dc3545;
+			color: #ffffff;
 		}
 
 		.stat-card-content {
@@ -278,23 +207,19 @@ $currentDate = date('d F Y');
 		}
 
 		.stat-card-number {
-			font-size: 2.8rem;
-			font-weight: 800;
-			margin: 0 0 8px 0;
-			background: linear-gradient(135deg, #2c3e50, #34495e);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
+			font-size: 2rem;
+			font-weight: 700;
+			margin: 0;
 			line-height: 1;
+			color: inherit;
 		}
 
 		.stat-card-label {
-			font-size: 1rem;
-			color: #6c757d;
-			margin: 0 0 15px 0;
-			font-weight: 600;
-			text-transform: uppercase;
-			letter-spacing: 0.5px;
+			font-size: 0.9rem;
+			font-weight: 500;
+			color: inherit;
+			margin: 5px 0 0 0;
+			opacity: 0.8;
 		}
 
 		.stat-card-breakdown {
@@ -395,56 +320,46 @@ $currentDate = date('d F Y');
 		}
 
 		.chart-card-header {
-			padding: 25px 30px;
-			background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-			border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+			padding: 15px 20px;
+			background: #ffffff;
+			border-bottom: 1px solid #dee2e6;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			border-radius: 6px 6px 0 0;
 		}
 
 		.chart-card-title {
-			font-size: 1.4rem;
-			font-weight: 700;
+			font-size: 1.2rem;
+			font-weight: 500;
 			margin: 0;
-			background: linear-gradient(135deg, #667eea, #764ba2);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
+			color: #495057;
+			font-family: 'Source Sans Pro', sans-serif;
 		}
 
 		.chart-card-body {
-			padding: 30px;
-			height: 400px;
+			padding: 20px;
+			height: 300px;
 			position: relative;
+			background: #ffffff;
+			border-radius: 0 0 6px 6px;
 		}
 
 		/* Performance Card */
 		.performance-card {
-			background: rgba(255, 255, 255, 0.95);
-			backdrop-filter: blur(20px);
-			border-radius: 25px;
-			box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
-			overflow: hidden;
+			background: #ffffff;
+			border-radius: 6px;
+			box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+			border: 0;
 			transition: all 0.3s ease;
-			border: 1px solid rgba(255, 255, 255, 0.3);
 			margin: 0 20px;
 			position: relative;
 		}
 
-		.performance-card::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			height: 5px;
-			background: linear-gradient(90deg, #667eea, #764ba2);
-		}
+
 
 		.performance-card:hover {
-			transform: translateY(-8px);
-			box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
 		}
 
 		.performance-header {
@@ -489,19 +404,17 @@ $currentDate = date('d F Y');
 		.performance-stat {
 			text-align: center;
 			padding: 15px;
-			background: rgba(102, 126, 234, 0.05);
-			border-radius: 15px;
-			border: 1px solid rgba(102, 126, 234, 0.1);
+			background: #f8f9fa;
+			border-radius: 6px;
+			border: 1px solid #dee2e6;
 		}
 
 		.performance-stat-number {
 			font-size: 1.5rem;
-			font-weight: 700;
+			font-weight: 600;
 			margin: 0 0 5px 0;
-			background: linear-gradient(135deg, #667eea, #764ba2);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-clip: text;
+			color: #495057;
+			font-family: 'Source Sans Pro', sans-serif;
 		}
 
 		.performance-stat-label {
