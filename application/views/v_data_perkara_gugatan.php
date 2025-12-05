@@ -175,8 +175,19 @@
 						}
 					}
 
-					// Calculate percentage for BHT completion rate
-					$persentase_bht = $card_total_putus > 0 ? round(($card_total_bht / $card_total_putus) * 100, 1) : 0;
+					// Calculate percentage for BHT completion rate with validation
+					// BHT tidak boleh lebih dari 100% karena tidak logis
+					if ($card_total_putus > 0) {
+						$raw_percentage = ($card_total_bht / $card_total_putus) * 100;
+						$persentase_bht = round(min(100.0, $raw_percentage), 1);
+
+						// Debug warning untuk developer
+						if ($raw_percentage > 100) {
+							error_log("WARNING: BHT > Putus detected! BHT: $card_total_bht, Putus: $card_total_putus, Raw%: " . round($raw_percentage, 1));
+						}
+					} else {
+						$persentase_bht = 0;
+					}
 					?>
 
 					<div class="col-lg-3 col-6">

@@ -19,7 +19,11 @@ class M_data_perkara_gugatan extends CI_Model
             locations.KECAMATAN,
             COALESCE(SUM(CASE WHEN subquery.date_type = 'tanggal_pendaftaran' THEN subquery.COUNT ELSE 0 END), 0) AS PERKARA_MASUK,
             COALESCE(SUM(CASE WHEN subquery.date_type = 'tanggal_putusan' THEN subquery.COUNT ELSE 0 END), 0) AS PERKARA_PUTUS,
-            COALESCE(SUM(CASE WHEN subquery.date_type = 'tanggal_bht' THEN subquery.COUNT ELSE 0 END), 0) AS PERKARA_TELAH_BHT,
+            -- BHT tidak boleh lebih dari PUTUS (fix untuk mengatasi persentase > 100%)
+            LEAST(
+                COALESCE(SUM(CASE WHEN subquery.date_type = 'tanggal_bht' THEN subquery.COUNT ELSE 0 END), 0),
+                COALESCE(SUM(CASE WHEN subquery.date_type = 'tanggal_putusan' THEN subquery.COUNT ELSE 0 END), 0)
+            ) AS PERKARA_TELAH_BHT,
             COALESCE(SUM(CASE WHEN subquery.date_type = 'tgl_akta_cerai' THEN subquery.COUNT ELSE 0 END), 0) AS JUMLAH_AKTA_CERAI
         FROM ($kecamatan_list) AS locations
         LEFT JOIN (";
