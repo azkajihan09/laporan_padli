@@ -95,6 +95,7 @@ class M_laporan_perceraian extends CI_Model
 							OR P.jenis_perkara_nama LIKE '%Istbat Nikah%'
 							OR P.jenis_perkara_nama LIKE '%Itsbat Nikah%'
 						)
+						AND P.nomor_perkara NOT LIKE '%/Pdt.P/%'
 						AND YEAR(A.tanggal_putusan) = ?
 						AND MONTH(A.tanggal_putusan) = ?
 					)
@@ -202,6 +203,7 @@ class M_laporan_perceraian extends CI_Model
 							OR P.jenis_perkara_nama LIKE '%Istbat Nikah%'
 							OR P.jenis_perkara_nama LIKE '%Itsbat Nikah%'
 						)
+						AND P.nomor_perkara NOT LIKE '%/Pdt.P/%'
 						AND YEAR(A.tanggal_putusan) = ?
 					)
 				)
@@ -308,6 +310,7 @@ class M_laporan_perceraian extends CI_Model
 							OR P.jenis_perkara_nama LIKE '%Istbat Nikah%'
 							OR P.jenis_perkara_nama LIKE '%Itsbat Nikah%'
 						)
+						AND P.nomor_perkara NOT LIKE '%/Pdt.P/%'
 						AND DATE(A.tanggal_putusan) BETWEEN ? AND ?
 					)
 				)
@@ -406,6 +409,7 @@ class M_laporan_perceraian extends CI_Model
 							OR P.jenis_perkara_nama LIKE '%Istbat Nikah%'
 							OR P.jenis_perkara_nama LIKE '%Itsbat Nikah%'
 						)
+						AND P.nomor_perkara NOT LIKE '%/Pdt.P/%'
 						AND YEAR(A.tanggal_putusan) = ?
 						AND MONTH(A.tanggal_putusan) = ?
 					)
@@ -501,6 +505,7 @@ class M_laporan_perceraian extends CI_Model
 							OR P.jenis_perkara_nama LIKE '%Istbat Nikah%'
 							OR P.jenis_perkara_nama LIKE '%Itsbat Nikah%'
 						)
+						AND P.nomor_perkara NOT LIKE '%/Pdt.P/%'
 						AND YEAR(A.tanggal_putusan) = ?
 					)
 				)
@@ -594,6 +599,7 @@ class M_laporan_perceraian extends CI_Model
 							OR P.jenis_perkara_nama LIKE '%Istbat Nikah%'
 							OR P.jenis_perkara_nama LIKE '%Itsbat Nikah%'
 						)
+						AND P.nomor_perkara NOT LIKE '%/Pdt.P/%'
 						AND DATE(A.tanggal_putusan) BETWEEN ? AND ?
 					)
 				)
