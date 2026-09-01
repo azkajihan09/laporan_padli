@@ -31,10 +31,12 @@ class M_laporan_perceraian extends CI_Model
 				P.pihak1_text AS nama_pihak_1,
 				PHK1.nomor_indentitas AS nik_pihak_1,
 				PHK1.pekerjaan AS pekerjaan_pihak_1,
+				PP1.alamat AS alamat_pihak_1,
 
 				P.pihak2_text AS nama_pihak_2,
 				PHK2.nomor_indentitas AS nik_pihak_2,
 				PHK2.pekerjaan AS pekerjaan_pihak_2,
+				PP2.alamat AS alamat_pihak_2,
 
 				DATE_FORMAT(A.tanggal_putusan, '%d-%m-%Y') AS tanggal_putusan,
 				DATE_FORMAT(A.tanggal_bht, '%d-%m-%Y') AS tanggal_bht,
@@ -140,10 +142,12 @@ class M_laporan_perceraian extends CI_Model
 				P.pihak1_text AS nama_pihak_1,
 				PHK1.nomor_indentitas AS nik_pihak_1,
 				PHK1.pekerjaan AS pekerjaan_pihak_1,
+				PP1.alamat AS alamat_pihak_1,
 
 				P.pihak2_text AS nama_pihak_2,
 				PHK2.nomor_indentitas AS nik_pihak_2,
 				PHK2.pekerjaan AS pekerjaan_pihak_2,
+				PP2.alamat AS alamat_pihak_2,
 
 				DATE_FORMAT(A.tanggal_putusan, '%d-%m-%Y') AS tanggal_putusan,
 				DATE_FORMAT(A.tanggal_bht, '%d-%m-%Y') AS tanggal_bht,
@@ -246,11 +250,13 @@ class M_laporan_perceraian extends CI_Model
 				P.pihak1_text AS nama_pihak_1,
 				PHK1.nomor_indentitas AS nik_pihak_1,
 				PHK1.pekerjaan AS pekerjaan_pihak_1,
+				PP1.alamat AS alamat_pihak_1,
 
 				P.pihak2_text AS nama_pihak_2,
 				PHK2.nomor_indentitas AS nik_pihak_2,
 
 				PHK2.pekerjaan AS pekerjaan_pihak_2,
+				PP2.alamat AS alamat_pihak_2,
 
 				DATE_FORMAT(A.tanggal_putusan, '%d-%m-%Y') AS tanggal_putusan,
 				DATE_FORMAT(A.tanggal_bht, '%d-%m-%Y') AS tanggal_bht,

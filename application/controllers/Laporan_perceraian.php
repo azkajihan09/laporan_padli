@@ -668,3 +668,57 @@ class Laporan_perceraian extends CI_Controller
 		exit;
 	}
 }
+
+if (!function_exists('validate_bulan')) {
+	function validate_bulan($bulan) {
+		$bulan = trim((string) $bulan);
+		if (preg_match('/^\d{1,2}$/', $bulan)) {
+			$m = (int) $bulan;
+			if ($m >= 1 && $m <= 12) return str_pad($m, 2, '0', STR_PAD_LEFT);
+		}
+		return date('m');
+	}
+}
+
+if (!function_exists('validate_tahun')) {
+	function validate_tahun($tahun) {
+		$tahun = trim((string) $tahun);
+		if (preg_match('/^\d{4}$/', $tahun)) {
+			$y = (int) $tahun;
+			if ($y >= 2000 && $y <= (int) date('Y') + 1) return $tahun;
+		}
+		return date('Y');
+	}
+}
+
+if (!function_exists('validate_jenis_laporan')) {
+	function validate_jenis_laporan($val) {
+		return in_array($val, array('bulanan', 'tahunan', 'custom')) ? $val : 'bulanan';
+	}
+}
+
+if (!function_exists('validate_wilayah')) {
+	function validate_wilayah($val, $default = 'Semua') {
+		return in_array($val, array('HSU', 'Balangan', 'Semua')) ? $val : $default;
+	}
+}
+
+if (!function_exists('validate_tanggal')) {
+	function validate_tanggal($tanggal, $default = null) {
+		if ($default === null) $default = date('Y-m-d');
+		$tanggal = trim((string) $tanggal);
+		if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $tanggal)) {
+			$p = explode('-', $tanggal);
+			if (checkdate((int)$p[1], (int)$p[2], (int)$p[0])) return $tanggal;
+		}
+		return $default;
+	}
+}
+
+if (!function_exists('validate_jenis_perkara')) {
+	function validate_jenis_perkara($val, $default = 'semua') {
+		$val = trim((string) $val);
+		if (empty($val)) return $default;
+		return preg_match('/^[a-zA-Z0-9\s\.\-\/]+$/', $val) ? $val : $default;
+	}
+}

@@ -742,6 +742,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                                     </th>
 
                                                     <th>
+                                                        Alamat Pihak 1
+                                                    </th>
+
+                                                    <th>
                                                         Nama Pihak 2
                                                     </th>
 
@@ -751,6 +755,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                                                     <th>
                                                         Pekerjaan Pihak 2
+                                                    </th>
+
+                                                    <th>
+                                                        Alamat Pihak 2
                                                     </th>
 
                                                     <th>
@@ -953,6 +961,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                                             </td>
 
 
+                                                            <!-- ALAMAT 1 -->
+                                                            <td>
+                                                                <?php
+                                                                echo htmlspecialchars(
+                                                                    isset($row->alamat_pihak_1) ? $row->alamat_pihak_1 : '-'
+                                                                );
+                                                                ?>
+                                                            </td>
+
+
                                                             <!-- PIHAK 2 -->
                                                             <td>
                                                                 <?php
@@ -978,6 +996,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                                                 <?php
                                                                 echo htmlspecialchars(
                                                                     $row->pekerjaan_pihak_2
+                                                                );
+                                                                ?>
+                                                            </td>
+
+
+                                                            <!-- ALAMAT 2 -->
+                                                            <td>
+                                                                <?php
+                                                                echo htmlspecialchars(
+                                                                    isset($row->alamat_pihak_2) ? $row->alamat_pihak_2 : '-'
                                                                 );
                                                                 ?>
                                                             </td>
@@ -1117,7 +1145,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                                                     <tr>
 
                                                         <td
-                                                            colspan="16"
+                                                            colspan="18"
                                                             class="text-center"
                                                         >
 
@@ -1276,7 +1304,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 },
 
                 "order": [
-                    [15, "desc"]
+                    [17, "desc"]
                 ],
 
                 "dom": 'Bfrtip',
