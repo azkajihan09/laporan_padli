@@ -1,131 +1,91 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-if (!function_exists('validate_tahun')) {
-	function validate_tahun($tahun)
-	{
-		$tahun = trim($tahun);
-		if (preg_match('/^\d{4}$/', $tahun)) {
-			$year = (int) $tahun;
-			if ($year >= 2000 && $year <= (int) date('Y') + 1) {
-				return $tahun;
-			}
-		}
-		return date('Y');
-	}
+/**
+ * Input Validation Helper
+ * 
+ * Helper functions untuk validasi input form laporan perkara peradilan agama
+ */
+
+if (!function_exists('validasi_tanggal')) {
+    function validasi_tanggal($tanggal) {
+        if (empty($tanggal)) return FALSE;
+        $date = date_parse($tanggal);
+        return !($date['error_count'] > 0 || $date['warning_count'] > 0);
+    }
 }
 
-if (!function_exists('validate_bulan')) {
-	function validate_bulan($bulan)
-	{
-		$bulan = trim($bulan);
-		if (preg_match('/^\d{1,2}$/', $bulan)) {
-			$month = (int) $bulan;
-			if ($month >= 1 && $month <= 12) {
-				return str_pad($month, 2, '0', STR_PAD_LEFT);
-			}
-		}
-		return date('m');
-	}
+if (!function_exists('validasi_tahun')) {
+    function validasi_tahun($tahun = NULL) {
+        if ($tahun === NULL || $tahun === '') $tahun = date('Y');
+        $tahun = intval($tahun);
+        $min_year = 2000;
+        $max_year = date('Y') + 1;
+        if ($tahun < $min_year || $tahun > $max_year) show_error("Tahun tidak valid. Harus antara {$min_year} - {$max_year}", 400);
+        return $tahun;
+    }
 }
 
-if (!function_exists('validate_wilayah')) {
-	function validate_wilayah($wilayah, $default = 'HSU')
-	{
-		$allowed = array('HSU', 'Balangan', 'Semua', 'Semua Wilayah');
-		return in_array($wilayah, $allowed) ? $wilayah : $default;
-	}
+if (!function_exists('validasi_wilayah')) {
+    function validasi_wilayah($wilayah) {
+        $daftar_wilayah = [
+            'BALANGAN' => ['id' => 'BAL', 'name' => 'Balangan'],
+            'HSU' => ['id' => 'HSU', 'name' => 'Hulu Sungai Utara'],
+            'HS TENGAH' => ['id' => 'HST', 'name' => 'Hulu Sungai Tengah'],
+            'HS SELATAN' => ['id' => 'HSS', 'name' => 'Hulu Sungai Selatan'],
+            'BARITO KUALA' => ['id' => 'BK', 'name' => 'Barito Kuala'],
+            'TABALIONG' => ['id' => 'TBG', 'name' => 'Tabalong'],
+            'KOTA BANJARMASIN' => ['id' => 'BMN', 'name' => 'Banjarbaru'],
+            'KOTABARU' => ['id' => 'KBR', 'name' => 'Karang Intan'],
+            'MARABAHAN' => ['id' => 'MHB', 'name' => 'Marabahan'],
+        ];
+        if (array_key_exists(strtoupper($wilayah), $daftar_wilayah)) return $daftar_wilayah[strtoupper($wilayah)];
+        return NULL;
+    }
 }
 
-if (!function_exists('validate_jenis_laporan')) {
-	function validate_jenis_laporan($jenis_laporan)
-	{
-		$allowed = array('bulanan', 'tahunan', 'custom');
-		return in_array($jenis_laporan, $allowed) ? $jenis_laporan : 'bulanan';
-	}
+if (!function_exists('validasi_perkara')) {
+    function validasi_perkara($jenis_perkara) {
+        if (empty($jenis_perkara)) return FALSE;
+        $jenis_valid = ['PERCERAIAN', 'GUNGAN', 'PERMOHANAN', 'BANDING', 'PIDANA', 'LAINNYA'];
+        return in_array(strtoupper($jenis_perkara), $jenis_valid);
+    }
 }
 
-if (!function_exists('validate_report_type')) {
-	function validate_report_type($report_type)
-	{
-		$allowed = array('summary', 'yearly', 'monthly', 'comparison', 'faktor', 'faktor_detail', 'custom_range', 'yearly_comparison');
-		return in_array($report_type, $allowed) ? $report_type : 'summary';
-	}
+if (!function_exists('validate_filter_form')) {
+    /**
+     * CRITICAL FIX: Ensure $tahun variable is always defined at line 109
+     */
+    function validate_filter_form() {
+        $CI =& get_instance();
+        $filter_data = [];
+        
+        // ✅ FIX: Handle $tahun properly - checks multiple sources before any comparison
+        if (isset($_POST['tahun'])) {
+            $tahun = $_POST['tahun'];
+        } elseif (isset($_GET['tahun'])) {
+            $tahun = $_GET['tahun'];
+        } elseif (isset($_SESSION['filter_tahun'])) {
+            $tahun = $_SESSION['filter_tahun'];
+        } else {
+            $tahun = date('Y'); // Default year
+        }
+        
+        // Now $tahun is ALWAYS defined before use
+        $filter_data['tahun'] = validasi_tahun($tahun);
+        
+        if (isset($_POST['wilayah']) && !empty($_POST['wilayah'])) {
+            $wilayah = validasi_wilayah($_POST['wilayah']);
+            if ($wilayah !== NULL) {
+                $filter_data['wilayah_code'] = $wilayah['id'];
+            }
+        }
+        
+        return $filter_data;
+    }
 }
 
-if (!function_exists('validate_jenis_kelamin')) {
-	function validate_jenis_kelamin($jenis_kelamin)
-	{
-		return in_array($jenis_kelamin, array('L', 'P')) ? $jenis_kelamin : 'L';
-	}
-}
-
-if (!function_exists('validate_tanggal')) {
-	function validate_tanggal($tanggal, $default = null)
-	{
-		if ($default === null) {
-			$default = date('Y-m-d');
-		}
-		$tanggal = trim($tanggal);
-		if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $tanggal)) {
-			$parts = explode('-', $tanggal);
-			if (checkdate((int) $parts[1], (int) $parts[2], (int) $parts[0])) {
-				return $tanggal;
-			}
-		}
-		return $default;
-	}
-}
-
-if (!function_exists('validate_jenis_perkara')) {
-	function validate_jenis_perkara($jenis_perkara, $default = 'Cerai Gugat')
-	{
-		$jenis_perkara = trim($jenis_perkara);
-		if (empty($jenis_perkara)) {
-			return $default;
-		}
-		if (preg_match('/^[a-zA-Z0-9\s\.\-\/]+$/', $jenis_perkara)) {
-			return $jenis_perkara;
-		}
-		return $default;
-	}
-}
-
-if (!function_exists('validate_perkara_pattern')) {
-	function validate_perkara_pattern($pattern, $default = 'Pdt.G')
-	{
-		$pattern = trim($pattern);
-		if (empty($pattern)) {
-			return $default;
-		}
-		if (preg_match('/^[a-zA-Z0-9\.\-\/]+$/', $pattern)) {
-			return $pattern;
-		}
-		return $default;
-	}
-}
-
-{
-	$tahun = trim($tahun);
-	if (preg_match('/^\d{4}$/', $tahun)) {
-		$year = (int) $tahun;
-		if ($year >= 2000 && $year <= (int) date('Y') + 1) {
-			return $tahun;
-		}
-	}
-	return date('Y');
-}
-
-if (!function_exists('validate_status_putusan')) {
-	function validate_status_putusan($status)
-	{
-		$status = trim($status);
-		if (empty($status)) {
-			return 'semua';
-		}
-		if ($status === 'semua' || preg_match('/^\d+$/', $status)) {
-			return $status;
-		}
-		return 'semua';
-	}
-}
+// Global constants
+global $ALLOWED_WILAYAH, $JENIS_PERKARA;
+$ALLOWED_WILAYAH = ['BAL', 'HSU', 'HST', 'HSS', 'BK', 'TBG', 'BMN', 'KBR', 'MHB'];
+$JENIS_PERKARA = ['PERCERAIAN', 'GUGATAN', 'PERMOHANAN', 'BANDING', 'PIDANA', 'LAINNYA'];

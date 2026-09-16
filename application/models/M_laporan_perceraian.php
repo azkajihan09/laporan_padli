@@ -233,11 +233,27 @@ class M_laporan_perceraian extends CI_Model
 		// Alasan: tabel pihak di DB ini multi-row per perkara, sehingga
 		// JOIN ngelipet tiap perkara jadi >1 baris. Subquery LIMIT 1
 		// memastikan SATU perkara = SATU baris.
+		//
+		// FIX ISTBAT: Perkara Istbat Nikah adalah permohonan (bukan gugatan),
+		// jadi kedua pihak tercatat sebagai "Pihak 1" (pemohon bersama).
+		// Pihak2_text kosong & perkara_pihak2 tidak punya data.
+		// Solusi: parse pihak1_text (split by '<br/>') + fallback ke row ke-2
+		// dari perkara_pihak1 untuk NIK/pekerjaan/alamat pihak 2.
+		//
+		// FIX NAMA: Pihak 1 tampil SATU nama saja (bagian sebelum <br/>),
+		// Pihak 2 ambil nama kedua. Prefix "1." / "2." ikut dibuang.
+		$p1_norm   = "REPLACE(P.pihak1_text, '<br />', '<br/>')";
+		$p1_first  = "SUBSTRING_INDEX($p1_norm, '<br/>', 1)";
+		$p1_second = "SUBSTRING_INDEX(SUBSTRING_INDEX($p1_norm, '<br/>', 2), '<br/>', -1)";
+		$strip_tpl = "TRIM(SUBSTRING(%s, IF(SUBSTRING(%s,1,1) BETWEEN '0' AND '9' AND SUBSTRING(%s,2,1) = '.', 3, 1)))";
+		$expr_p1   = sprintf($strip_tpl, $p1_first, $p1_first, $p1_first);
+		$expr_p2   = sprintf($strip_tpl, $p1_second, $p1_second, $p1_second);
+
 		return "SELECT
 				P.nomor_perkara,
 				P.jenis_perkara_nama,
 
-				P.pihak1_text AS nama_pihak_1,
+				{$expr_p1} AS nama_pihak_1,
 				(SELECT ph1.nomor_indentitas FROM perkara_pihak1 pp1
 					INNER JOIN pihak ph1 ON ph1.id = pp1.pihak_id
 					WHERE pp1.perkara_id = P.perkara_id
@@ -250,18 +266,47 @@ class M_laporan_perceraian extends CI_Model
 					WHERE pp1.perkara_id = P.perkara_id
 					ORDER BY pp1.id LIMIT 1) AS alamat_pihak_1,
 
-				P.pihak2_text AS nama_pihak_2,
-				(SELECT ph2.nomor_indentitas FROM perkara_pihak2 pp2
-					INNER JOIN pihak ph2 ON ph2.id = pp2.pihak_id
-					WHERE pp2.perkara_id = P.perkara_id
-					ORDER BY pp2.id LIMIT 1) AS nik_pihak_2,
-				(SELECT ph2.pekerjaan FROM perkara_pihak2 pp2
-					INNER JOIN pihak ph2 ON ph2.id = pp2.pihak_id
-					WHERE pp2.perkara_id = P.perkara_id
-					ORDER BY pp2.id LIMIT 1) AS pekerjaan_pihak_2,
-				(SELECT pp2.alamat FROM perkara_pihak2 pp2
-					WHERE pp2.perkara_id = P.perkara_id
-					ORDER BY pp2.id LIMIT 1) AS alamat_pihak_2,
+				-- Nama Pihak 2: prioritas pihak2_text; kalau kosong (Istbat),
+				-- ambil nama kedua dari pihak1_text setelah <br/>.
+				CASE
+					WHEN P.pihak2_text IS NOT NULL AND P.pihak2_text != '' THEN P.pihak2_text
+					WHEN LOCATE('<br/>', {$p1_norm}) = 0 THEN ''
+					ELSE {$expr_p2}
+				END AS nama_pihak_2,
+
+				-- NIK Pihak 2: fallback row ke-2 perkara_pihak1
+				COALESCE(
+					(SELECT ph2.nomor_indentitas FROM perkara_pihak2 pp2
+						INNER JOIN pihak ph2 ON ph2.id = pp2.pihak_id
+						WHERE pp2.perkara_id = P.perkara_id
+						ORDER BY pp2.id LIMIT 1),
+					(SELECT ph1.nomor_indentitas FROM perkara_pihak1 pp1
+						INNER JOIN pihak ph1 ON ph1.id = pp1.pihak_id
+						WHERE pp1.perkara_id = P.perkara_id
+						ORDER BY pp1.id LIMIT 1 OFFSET 1)
+				) AS nik_pihak_2,
+
+				-- Pekerjaan Pihak 2: fallback row ke-2 perkara_pihak1
+				COALESCE(
+					(SELECT ph2.pekerjaan FROM perkara_pihak2 pp2
+						INNER JOIN pihak ph2 ON ph2.id = pp2.pihak_id
+						WHERE pp2.perkara_id = P.perkara_id
+						ORDER BY pp2.id LIMIT 1),
+					(SELECT ph1.pekerjaan FROM perkara_pihak1 pp1
+						INNER JOIN pihak ph1 ON ph1.id = pp1.pihak_id
+						WHERE pp1.perkara_id = P.perkara_id
+						ORDER BY pp1.id LIMIT 1 OFFSET 1)
+				) AS pekerjaan_pihak_2,
+
+				-- Alamat Pihak 2: fallback row ke-2 perkara_pihak1
+				COALESCE(
+					(SELECT pp2.alamat FROM perkara_pihak2 pp2
+						WHERE pp2.perkara_id = P.perkara_id
+						ORDER BY pp2.id LIMIT 1),
+					(SELECT pp1.alamat FROM perkara_pihak1 pp1
+						WHERE pp1.perkara_id = P.perkara_id
+						ORDER BY pp1.id LIMIT 1 OFFSET 1)
+				) AS alamat_pihak_2,
 
 				DATE_FORMAT(A.tanggal_putusan, '%d-%m-%Y') AS tanggal_putusan,
 				DATE_FORMAT(A.tanggal_bht, '%d-%m-%Y') AS tanggal_bht,
